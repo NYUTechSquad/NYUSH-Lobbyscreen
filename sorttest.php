@@ -2,9 +2,10 @@
 header('Content-type: application/json');//The output is json;
 date_default_timezone_set('UTC');
 $current_time = date('Y-m-d').'T'.date('H:i:').'00Z';
-$url = file_get_contents("./api1.sensitive").$current_time;
-$url2 = file_get_contents("./api2.sensitive").$current_time;
 
+
+$url = file_get_contents("api1.sensitive").$current_time;
+$url2 = file_get_contents("api2.sensitive").$current_time;
 
 $ch = curl_init($url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
