@@ -1,0 +1,629 @@
+@-webkit-keyframes datFade {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+@-moz-keyframes datFade {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+@-o-keyframes datFade {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes datFade {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@-webkit-keyframes datOtherFade {
+  0%   { opacity: 1; }
+  100% { opacity: 0; }
+}
+@-moz-keyframes datOtherFade {
+  0%   { opacity: 1; }
+  100% { opacity: 0; }
+}
+@-o-keyframes datOtherFade {
+  0%   { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes datOtherFade {
+  0%   { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+html, body{
+height: 100%;
+width: 100%;
+margin: 0pt;
+border: 0pt;
+padding: 0pt;
+}
+
+body {
+height: 100%;
+width: 100%;
+background-color: #DADADA;
+font-family: gotham, "Open Sans", "Helvetica Neue", helvetica, arial, sans-serif;
+border: 0pt;
+padding: 0pt;
+margin: 0pt;
+}
+
+div {
+padding: 2.75vh;
+}
+
+.allthestuff {
+position:fixed;
+height:auto;
+bottom:0;
+top:0;
+left:0;
+right:0;
+display: flex;
+flex-direction: column;
+}
+
+.topbar {
+padding: 3vh;
+background-color: #57068C;
+margin-bottom: 2.75vh;
+box-shadow: 0.7pt 0.7pt 12pt #555;
+background: linear-gradient(180deg, #5C068C, #410076);
+}
+
+.topbar img {
+height: 11vh;
+width: auto;
+padding-left: 0.8vh;
+float: left;
+}
+
+.contentpane {
+/*border-radius: 3.0pt;*/
+display: none;
+font-family: gotham, "gotham", "Helvetica Neue", helvetica, arial, sans-serif;
+background-color: #FBF8F8;
+/*border-radius: 2.5pt;*/
+box-shadow: 1pt 1pt 10pt #777;
+line-height: 140%;
+padding-left: 1.5vh;
+padding-right: 1.5vh;
+padding-top: 1.5vh;
+padding-bottom: 1.5vh;
+border-bottom: 1.5vh;
+overflow: visible;
+white-space: normal;
+display: none;
+opacity:0;
+transition-duration: 0.5s;
+-webkit-animation:datFade ease-in 1;
+-moz-animation:datFade ease-in 1;
+animation:datFade ease-in 1;
+-webkit-animation-fill-mode:forwards;
+-moz-animation-fill-mode:forwards;
+animation-fill-mode:forwards;
+-webkit-animation-duration:1s;
+-moz-animation-duration:1s;
+animation-duration:1s;
+flex: 1;
+}
+
+.allcontents {
+padding: inherit;
+margin: inherit;
+border: inherit;
+color: inherit;
+/* height: 77.165vh; */
+/*height: calc(75.24vh - 4.75pt);*/
+height: calc(74.83vh + 0pt);
+position: relative;
+display: flex;
+flex-direction: row;
+/* background-color: purple; */
+
+}
+
+.alltheleftstuff {
+overflow: visible;
+white-space: normal;
+/*flex: 2.2;*/
+flex: 3.2;
+background-color: inherit;
+color: inherit;
+padding-top: 2.68vh; /* the padding is built in to the top element */
+}
+
+.alltherightstuff { /* This is the right weather displaying part. */
+overflow: hidden;
+color: inherit;
+white-space: normal;
+/* text-align: center; */
+flex: 1;
+color: #615151;
+}
+
+.weatherMain {
+font-size: 100vh;
+}
+
+
+.leftcontent {
+text-align: inherit;
+background-color: inherit;
+color: #413641;
+}
+
+#date_time_1 {
+font-family: gotham, "Noto Sans CJK SC";
+font-weight: 500;
+font-size: 3.0vh;
+line-height: 3.5vh;
+color: #716671;
+white-space: nowrap;
+text-overflow: ellipsis;
+overflow: hidden;
+}
+
+#date_time_2 {
+font-family: gotham-light, "gotham-light", "Gotham Light", gotham, "Noto Sans CJK SC";
+font-size: 2.9vh;
+line-height: 3.6vh;
+white-space: nowrap;
+text-overflow: ellipsis;
+overflow: hidden;
+}
+
+#location {
+font-family: gotham-light, "gotham-light", "Gotham Light", gotham, "Noto Sans CJK SC";
+font-size: 2.9vh;
+line-height: 3.0vh;
+white-space: nowrap;
+text-overflow: ellipsis;
+overflow: hidden;
+}
+
+.thin {
+font-weight: 400;
+}
+
+.rightcontent {
+text-align: inherit;
+color: inherit;
+}
+
+.parent {
+text-align: inherit;
+display: flex;
+flex-direction: column;
+align-items: stretch;
+}
+
+.child {
+text-align: inherit;
+border: 0pt;
+/* margin-top: 2.5vh; */
+margin-bottom: 0vh;
+padding: 0pt;
+flex: 1;
+}
+
+.name {
+padding: 0pt;
+margin: 0pt;
+border: 0pt;
+font-family: gotham-medium, "Gotham Medium", "gotham-medium", "Helvetica Neue", helvetica, "Noto Sans CJK SC", arial, sans-serif;
+font-weight: 600;
+white-space: nowrap;
+text-overflow: ellipsis;
+overflow: hidden;
+font-size: 4.2vh;
+line-height: 4.6vh;
+text-transform: uppercase;
+color: #b50d3f;
+white-space: nowrap;
+text-overflow: ellipsis;
+overflow: hidden;
+/*text-shadow: 0.5pt 0.5pt 2pt #444;*/
+}
+
+#righttitle {
+padding: 0pt;
+margin: 0pt;
+border: 0pt;
+flex: 1;
+}
+
+
+#date {
+/* font-family: gotham-medium, "gotham-medium", "Gotham Medium", gotham, "Noto Sans CJK SC"; */
+white-space: nowrap;
+text-overflow: ellipsis;
+overflow: hidden;
+font-size: 3.5vh;
+line-height: 3.8vh;
+}
+
+.nomarginstuff {
+padding: 0pt;
+margin: 0pt;
+border: 0pt;
+font-size: inherit;
+}
+
+.desc {
+padding: 0pt;
+margin: 0pt;
+border: 0pt;
+font-size: 3.25vh;
+line-height: 3.6vh;
+overflow: visible;
+}
+
+#weather_desc {
+font-family: gotham;
+font-weight: 200;
+text-transform: uppercase;
+font-size: 3vh;
+color: red;
+/*text-shadow: 0.5pt 0.5pt 2pt green;*/
+}
+
+#weather_title {
+font-family: "gotham-medium", gotham-medium, gotham;
+line-height: 6vh;
+font-size: 5vh;
+text-align: right;
+clear: left;
+}
+
+#weatherimage {
+height: 15vh;
+opacity: 0.50;
+padding-top: 3vh;
+/*padding-right: 2.8vw;*/
+/*padding-right: 3.5vw;*/
+/*float: center;*/
+/*filter: drop-shadow(5pt 5pt 10pt yellow);*/
+}
+
+#weatherimageHolder {
+/*float: center;*/
+}
+
+#weather_desc_table{
+overflow: hidden;
+padding: 0vh 0vh 0vh 0vh;
+padding-top: 2vh;
+}
+
+table {
+width: 100%;
+padding: 0pt;
+overflow: visible;
+}
+
+.bottomborder {
+border-bottom: calc(1pt + 0.05vh);
+border-color: #DADADA;
+border-bottom-style: solid;
+/* padding-bottom: 2.2vh; */
+padding-bottom: 2.4vh;
+margin-bottom: 1.8vh;
+}
+
+.topmargin: {
+padding-top: 2.5vh;
+}
+
+.left {
+text-align: left;
+}
+
+.right {
+text-align: right;
+}
+
+.weatherDesc {
+text-align: center;
+}
+
+#weather_desc_table {
+margin-top: 1.75vh;
+}
+
+.leftTitle {
+line-height: 5.2vh;
+text-align: left;
+}
+
+.rightTitle {
+line-height: 5.5vh;
+}
+
+/*#eng_title1 {
+font-size: 6vh;
+font-weight: 100;
+opacity: 0.4;
+font-family: gotham-light;
+}*/
+
+#weather_title {
+font-family: "Oswald", gotham-medium, "Gotham Medium", "gotham-medium", gotham, "Noto Sans CJK SC";
+font-size: 2.95vw;
+font-size: 3.1vw;
+font-weight: 800;
+text-align: center;
+vertical-align: top;
+text-shadow: 0pt 0pt 10pt #CCC;
+overflow: visible;
+white-space: nowrap;
+}
+
+/*#zh_title1 {
+font-size: 4.5vh;
+font-weight: 100;
+}*/
+
+/* 
+#zh_title2 {
+font-weight: 200;
+font-size: 4.63vh;
+font-weight: 700;
+vertical-align: top;
+text-shadow: 0pt 0pt 10pt #CCC
+}
+ */
+
+#eng_desc {
+color: inherit;
+vertical-align: bottom;
+text-transform: lowercase;
+line-height: 3.1vh;
+font-size: 3vh;
+font-family: gotham-light, "Gotham Light", "gotham-light", gotham;
+font-weight: 200;
+/*opacity: 0.7;*/
+padding-bottom: 0.5vh;
+text-shadow: 0pt 0pt 10pt #FFF;
+}
+
+#zh_desc {
+font-family: "Noto Sans CJK SC";
+color: inherit;
+vertical-align: top;
+font-size: 4vh;
+line-height: 4vh;
+font-weight: 300;
+/*opacity: 0.7;*/
+padding-top: 0.5vh;
+text-shadow: 0pt 0pt 10pt #CCC;
+}
+
+.weatherDesc {
+width: 50%;
+}
+
+#eng_air_quality_title {
+vertical-align: top;
+text-align: right;
+/* font-size: 1.8vh; */
+font-size: 1.55vh;
+line-height: 1.55vh;
+text-transform: uppercase;
+font-weight: 600;
+/*opacity: 0.7;*/
+letter-spacing: -0.03vw;
+overflow: visible;
+white-space: nowrap;
+}
+
+#zh_air_quality_title {
+font-family: "Noto Sans CJK SC";
+text-align: right;
+vertical-align: top;
+font-size: 2.2vh;
+line-height: 2.7vh;
+/* letter-spacing: -0.058vw; */
+letter-spacing: -0.02vw;
+overflow: visible;
+white-space: nowrap;
+}
+
+#aqi_number {
+font-family: gotham-xlight, "gotham-xlight", "Gotham X-light", gotham;
+font-size: 8vh;
+line-height: 4vh;
+vertical-align: top;
+padding: 0vh 0vh 0vh 0vh;
+padding-top: 1.5vh;
+font-weight: 1;
+text-align: right;
+}
+
+#eng_aqi_desc {
+padding-top: 1.15vh;
+font-size: 1.1vh;
+line-height: 1.6vh;
+font-family: gotham-book, "gotham-book", "Gotham Book", gotham;
+/* line-height: 1.8vh; */
+vertical-align: top;
+letter-spacing: -0.5pt;
+}
+
+#zh_aqi_desc {
+font-family: "Noto Sans CJK SC";
+font-weight: 200;
+font-size: 1.9vh;
+line-height: 2vh;
+vertical-align: top;
+letter-spacing: -0.2pt;
+/*padding: 0vh 0vh 0vh 0vh;*/
+}
+
+#temp_number {
+padding: 0vh 0vh 0vh 0vh;
+font-family: "Oswald", gotham-light, "Gotham Light", "gotham-light", gotham;
+font-weight: 300;
+font-size: 12vh;
+line-height: 11vh;
+padding-top: 0vh;
+/* letter-spacing: -2vh; */
+letter-spacing: -0.3vh;
+text-align: center;
+text-shadow: 1.8pt 1.8pt 6pt #777;
+}
+
+#temp_numberHolder {
+/*width: 15vw;
+height: 5vh;*/
+overflow: visible;
+white-space: normal;
+/*background-color: green;*/
+vertical-align: center;
+/*vertical-align: -50%;*/
+width: 100%; /*100% of available space*/
+}
+
+#eng_temp_title {
+font-size: 1.55vh;
+/* line-height: 2vh; */
+vertical-align: top;
+text-transform: uppercase;
+font-weight: 700;
+letter-spacing: -0.03vw;
+}
+
+#zh_temp_title {
+font-family: "Microsoft YaHei New", "Microsoft Yahei", "微软雅黑", 宋体, SimSun, STXihei, "华文细黑", sans-serif;
+font-size: 2vh;
+line-height: 2vh;vertical-align: top;
+font-weight: 700;
+letter-spacing: -0.03vw;
+}
+
+
+#temp_title {
+font-size: 1.9vh;
+vertical-align: top;
+font-weight: 300;
+/* letter-spacing: -0.03vw; */
+}
+
+#air_quality_temp_table {
+/* margin-top: 2.25vh; */
+/* margin-top: 1.5vh; */
+/*height: 2vh;*/
+overflow: visible;
+white-space: normal;
+position:fixed;
+bottom: 7.5vh;
+right: 7.5vh;
+/*width: 25.5vw;*/
+width: 20vw;
+}
+
+table {
+padding: 0vh 0vh 0vh 0vh;
+overflow: visible;
+}
+
+tr {
+padding: 0vh 0vh 0vh 0vh;
+overflow: visible;
+/* border: 1px solid black; */
+}
+
+td {
+padding: 0vh 0vh 0vh 0vh;
+overflow: visible;
+/* border: 1px solid black; */
+}
+
+tbody {
+padding: 0vh 0vh 0vh 0vh;
+overflow: visible;
+}
+
+p {
+margin: 0vh 0vh 0vh 0vh;
+}
+
+.timeStuff {
+font-family: gotham-medium, "gotham-medium", "Gotham Medium", gotham, "Noto Sans CJK SC";
+color: white;
+text-align: right;
+vertical-align: top;
+}
+
+.date {
+font-family: gotham-medium, "gotham-medium", "Gotham Medium", gotham, "Noto Sans CJK SC";
+font-size: 3.6vh;
+font-size: 3.2vh;
+line-height: 5.2vh;
+text-transform: uppercase;
+font-weight: 500;
+overflow: visible;
+height: 5.5vh;
+padding-right: 1.25vh;
+text-shadow: 0.5pt 0.5pt 5pt #37006C;
+}
+
+#sh_clock {
+font-family: gotham, gotham-book, "gotham-book", "Gotham Book", gotham;
+text-align: center;
+color: #E3DEE0;
+border: 0vh;
+margin-bottom: 2.75vh;
+letter-spacing: -0.15vw;
+/*color: #b5ada6;*/
+background-color: #00A490;
+/*background-color: #799a05;*/
+padding-top: 2.20vh;
+/* padding-bottom: 1.5vh; */
+padding-bottom: 2.20vh;
+font-size: 8.5vh;
+font-size: 7.6vh;
+line-height: 8.5vh;
+line-height: 9.75vh;
+height: 8.9vh;
+border-radius: 4.5pt;
+/*border-style: solid;*/
+/*border-width: 0.20vh;*/
+/*border-color: #413131;*/
+background: linear-gradient(180deg, #00A490, #009C8E);
+text-shadow: 0.5px 0.5px 10px #00826E;
+box-shadow: 0.5pt 0.5pt 4pt #777;
+/*height: 8.6vh;*/
+}
+
+#weather {
+padding: 1.75vh;
+background-color: #b5ada6;
+border-radius: 4.5pt;
+/*height: calc(48.2vh - 00pt);*/
+/*height: 48.3vh;*/
+height: 50vh;
+background: linear-gradient(180deg, #B7B0A8, #A0958C);
+/*border-style: solid;*/
+/*border-width: 0.20vh;*/
+/*border-color: #716161;*/
+box-shadow: 0.5pt 0.5pt 3.5pt #777;
+}
+
+#aqi_box {
+color: #413641;
+/*height: 14.75vh;*/
+/*height: 100%;*/
+/*background-color: purple;*/
+padding: 1vh;
+/* margin-top: 20.2vh; */
+border-radius: 4.5pt;
+letter-spacing: -0.2vw;
+/*padding-radius: 5.4pt;*/
+border-style: solid;
+border-color: #716161;
+/*border-width: 0.18vh;*/
+box-shadow: 0.5pt 0.5pt 5pt #444;
+}
