@@ -1,0 +1,73 @@
+200	thunderstorm with light rain	lightning.png	FALSE		storm	雷雨
+201	thunderstorm with rain	lightning.png	FALSE		storm	雷雨
+202	thunderstorm with heavy rain	lightning.png	FALSE		storm	雷雨
+210	light thunderstorm	lightning.png	FALSE		storm	雷雨
+211	thunderstorm	lightning.png	FALSE		storm	雷雨
+212	heavy thunderstorm	lightning.png	FALSE		storm	雷雨
+221	ragged thunderstorm	lightning.png	FALSE		storm	雷雨
+230	thunderstorm with light drizzle	lightning.png	FALSE		storm	雷雨
+231	thunderstorm with drizzle	lightning.png	FALSE		storm	雷雨
+232	thunderstorm with heavy drizzle	lightning.png	FALSE		storm	雷雨
+300	light intensity drizzle	rain.png	FALSE		light rain	小雨
+301	drizzle	rain.png	FALSE		light rain	小雨
+302	heavy intensity drizzle	rain.png	FALSE		light rain	小雨
+310	light intensity drizzle rain	rain.png	FALSE		light rain	小雨
+311	drizzle rain	rain.png	FALSE		light rain	小雨
+312	heavy intensity drizzle rain	rain.png	FALSE		light rain	小雨
+313	shower rain and drizzle	rain.png	FALSE		light rain	小雨
+314	heavy shower rain and drizzle	rain.png	FALSE		light rain	小雨
+321	shower drizzle	rain.png	FALSE		light rain	小雨
+500	light rain	rain.png	FALSE		light rain	小雨
+501	moderate rain	rain.png	FALSE		rain	雨
+502	heavy intensity rain	rain.png	FALSE		rain	雨
+503	very heavy rain	rain.png	FALSE		rain	雨
+504	extreme rain	rain.png	FALSE		rain	雨
+511	freezing rain	rain.png	FALSE		freezing rain	冻雨
+520	light intensity shower rain	rain.png	FALSE		rain	雨
+521	shower rain	rain.png	FALSE		rain	雨
+522	heavy intensity shower rain	rain.png	FALSE		rain	雨
+531	ragged shower rain	rain.png	FALSE		rain	雨
+600	light snow	snow.png	FALSE		snow	小雪
+601	snow	snow.png	FALSE		snow	雪
+602	heavy snow	snow.png	FALSE		snow	雪
+611	sleet	snow.png	FALSE		snow	雪
+612	shower sleet	snow.png	FALSE		snow	雪
+615	light rain and snow	snow.png	FALSE		snow	雪
+616	rain and snow	snow.png	FALSE		snow	雪
+620	light shower snow	snow.png	FALSE		snow	雪
+621	shower snow	snow.png	FALSE		snow	雪
+622	heavy shower snow	snow.png	FALSE		snow	雪
+701	mist	fog.png	FALSE		mist	薄雾
+711	smoke	fog2.png	FALSE		smoke	烟
+721	haze	day_haze.png	TRUE	night_haze.png	haze	雾霾
+731	sand, dust whirls	tornado.png	FALSE		dust whirls	尘旋风
+741	fog	fog.png	FALSE		fog	雾
+751	sand	fog2.png	FALSE		sand	沙风
+761	dust	fog2.png	FALSE		dust	灰尘
+762	volcanic ash	fog2.png	FALSE		ash	灰尘
+771	squalls	wind.png	FALSE		squalls	暴风
+781	tornado	tornado.png	FALSE		tornado	龙卷风
+800	clear sky	sun.png	TRUE	night_clear.png	clear	晴
+801	few clouds	sun.png	TRUE	night_clear.png	clear	晴
+802	scattered clouds	part_sun.png	TRUE	part_clouds_night.png	scattered clouds	多云
+803	broken clouds	part_sun.png	TRUE	part_clouds_night.png	broken clouds	多云
+804	overcast clouds	clouds.png	FALSE		clouds	多云
+900	tornado	tornado.png	FALSE		tornado	龙卷风
+901	tropical storm	rain.png	FALSE		tropical storm	热带风暴
+902	hurricane	hurricane.png	FALSE		hurricane	飓风
+903	cold	low_temp.png	FALSE		extreme cold	寒冷
+904	hot	high_temp.png	FALSE		extreme heat	炎热
+905	windy	wind.png	FALSE		wind	大风
+906	hail	hail.png	FALSE		hail	冰雹
+951	calm	sun.png	TRUE	night_clear.png	calm	无风
+952	light breeze	sun.png	TRUE	night_clear.png	breeze	微风
+953	gentle breeze	sun.png	TRUE	night_clear.png	breeze	微风
+954	moderate breeze	sun.png	TRUE	night_clear.png	breeze	微风
+955	fresh breeze	wind.png	FALSE		wind	有风
+956	strong breeze	wind.png	FALSE		wind	有风
+957	high wind, near gale	wind.png	FALSE		high winds	大风
+958	gale	wind.png	FALSE		high winds	大风
+959	severe gale	wind.png	FALSE		high winds	大风
+960	storm	lightning.png	FALSE		storm	暴雨
+961	violent storm	lightning.png	FALSE		storm	暴雨
+962	hurricane	hurricane.png	FALSE		hurricane	飓风
