@@ -39,7 +39,11 @@ class Root(object):
     def text(self):
         try:
             cherrypy.response.headers['Content-Type']= 'application/json'
-            r = sorter.sortAll(testing=True)
+            TESTING = True
+            if TESTING:
+                r = sorter.sort(86405, TESTING=True)
+            else:
+                r = sorter.sortAll()
             # Let's have a test case.
             return json.dumps(r)
         except BaseException as e:

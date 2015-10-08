@@ -3,6 +3,7 @@ import datetime
 import json
 import sys
 import os
+import codecs
 
 orgIDs = {
     "Campus Life": 86405,
@@ -14,8 +15,6 @@ logger.setLevel(logging.DEBUG)
 ch = logging.StreamHandler(sys.stderr)
 logger.addHandler(ch)
 
-DUMPTOFILE = False
-
 def findSoonestOccurrence(timestr, occs):
     occs = sorted(occs, key=lambda x: x["starts_at"])
     for o in occs:
@@ -25,6 +24,7 @@ def findSoonestOccurrence(timestr, occs):
     # If all occurrences have passed, return None
     return None
 
+jsonfpath = os.path.abspath(os.path.join(os.path.dirname(__file__), "testcase.json"))
 def sort(orgID, TESTING=False, DUMPTOFILE=False):
     apikeydir = os.path.abspath(os.path.join(os.path.dirname(__file__), "apikey.sensitive"))
     with open(apikeydir) as f:
@@ -41,15 +41,13 @@ def sort(orgID, TESTING=False, DUMPTOFILE=False):
 
     # have a special testcase because the API is slow.
     if TESTING:
-        import codecs
-        with codecs.open("testcase.json", "r", "utf-8") as f:
+        with codecs.open(jsonfpath, "r", "utf-8") as f:
             response = f.read()
     else:
         import requests
         response = requests.get(url).text
         if DUMPTOFILE:
-            import codecs
-            with codecs.open("testcase.json", "w", "utf-8") as f:
+            with codecs.open(jsonfpath, "w", "utf-8") as f:
                 f.write(response)
 
     # next part is pre-processing data
@@ -68,10 +66,7 @@ def sort(orgID, TESTING=False, DUMPTOFILE=False):
     
     # Sort the found events to find the soonest 4.
     out = sorted(eventsfound, key=lambda x: x["start_time"])
-    try:
-        return out[:4]
-    except:
-        return out # less than 4 valid events
+    return out[:4]
 
 def sortAll(TESTING=False, DUMPTOFILE=False):
     AllEvents = [sort(x, TESTING, DUMPTOFILE) for x in orgIDs.values()]
@@ -79,12 +74,20 @@ def sortAll(TESTING=False, DUMPTOFILE=False):
     for e in AllEvents:
         combined.extend(e)
     out = sorted(combined, key=lambda x: x["start_time"])
-    try:
-        return out[:4]
-    except:
-        return out # less than 4 valid events.
+    return out[:4]
     
 
 if __name__=="__main__":
     from pprint import pprint
-    pprint(sortAll(DUMPTOFILE=True)) # 'refresh' the testcase when run standalone
+    import sys
+
+    try:
+        TESTING = True if sys.argv[1] == 't' else False
+    except:
+        TESTING = False
+    try:
+        DUMPTOFILE = True if sys.argv[2] == 'f' else False
+    except:
+        DUMPTOFILE = False
+
+    pprint(sortAll(TESTING, DUMPTOFILE)) # 'refresh' the testcase when run standalone
