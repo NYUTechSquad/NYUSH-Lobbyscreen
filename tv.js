@@ -1,3 +1,11 @@
+var engMonthsKey = ['January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+];
+var engWeekKey = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday',
+    'Friday', 'Saturday'
+];
+var zhWeekKey = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+
 /////////////////////////////////////////////////////////////////////////////////////////// 
 function updateClock() {
     var today = new Date();
@@ -18,14 +26,6 @@ function updateClock() {
         }
     }
 
-    var engMonthsKey = ['January', 'February', 'March', 'April', 'May', 'June',
-        'July', 'August', 'September', 'October', 'November', 'December'
-    ];
-    var engWeekKey = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday',
-        'Friday', 'Saturday'
-    ];
-    var zhWeekKey = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
-
     $("#dateHeader").html(
             ' <div class="nomarginstuff date">' + engWeekKey[ww] + ', ' +
             engMonthsKey[mm] + " " + dd + '</div>'
@@ -33,8 +33,8 @@ function updateClock() {
             ",&nbsp&nbsp" + zhWeekKey[ww] + '</div> '
         );
     $("#sh_clock").html(
-    		'' + h + ":" + m + " " + AP + ''
-    	);
+            '' + h + ":" + m + " " + AP + ''
+        );
 }
 
 JSONFILE = %s // to be replaced server-side using Python
@@ -44,8 +44,8 @@ PADDINGDATA = JSONFILE["padding"]
 ///////////////////////////// ///////////////////////////// ///////////////////////////// 
 
 $(window).load(function() {
-	updateClock();
-	window.setInterval(updateClock, 1000);
+    updateClock();
+    window.setInterval(updateClock, 1000);
     ///////////////////////////// 
     var weather_main = ""; //variable "data" refer to the JSON data we got
     var weather_description = "";
@@ -87,17 +87,17 @@ $(window).load(function() {
             // Using the data saved from earlier, set properties
             info = WEATHERDATA[weather_id]
             if (info.hasNightFile) {
-            	weatherImgSrc = info.nightfilename
+                weatherImgSrc = info.nightfilename
             }
-        	else {
-        		weatherImgSrc = info.filename
-        	}
-        	eng_weather = info.en
-        	zh_weather = info.cn
-        	extraRightPadding = PADDINGDATA[weatherImgSrc]
+            else {
+                weatherImgSrc = info.filename
+            }
+            eng_weather = info.en
+            zh_weather = info.cn
+            extraRightPadding = PADDINGDATA[weatherImgSrc]
 
-        	// give it the proper path
-        	weatherImgSrc = "images/" + weatherImgSrc
+            // give it the proper path
+            weatherImgSrc = "images/" + weatherImgSrc
 
             eng_weather = eng_weather.split(' ').join('</br>'); // so each word goes on its own line of text
 
@@ -140,64 +140,69 @@ $(window).load(function() {
                         eng_aqi_desc = 'Good';
                         zh_aqi_desc = '健康';
                         color =
-                            'background: linear-gradient(180deg, #00A300, #007E00);';
+                            'linear-gradient(180deg, #00A300, #007E00)';
                         text = '#C6C1B7';
                     } else if (50 < AQI && AQI <= 100) {
                         eng_aqi_desc = 'Moderate';
                         zh_aqi_desc = '中等';
                         color =
-                            'background: linear-gradient(180deg, #FFAF00, #C7A000);';
+                            'linear-gradient(180deg, #FFAF00, #C7A000)';
                     } else if (100 < AQI && AQI <= 150) {
                         eng_aqi_desc =
                             'Unhealthy for Sensitive Groups';
                         zh_aqi_desc = '对敏感人群不健康';
                         color =
-                            'background: linear-gradient(180deg, #FFA200, #CF7200);';
+                            'linear-gradient(180deg, #FFA200, #CF7200)';
                     } else if (150 < AQI && AQI <= 200) {
                         eng_aqi_desc = 'Unhealthy';
                         zh_aqi_desc = '不健康 ';
                         color =
-                            'background: linear-gradient(180deg, #A91B00, #890B00);';
+                            'linear-gradient(180deg, #A91B00, #890B00)';
                         text = '#C6C1B7';
                     } else if (200 < AQI && AQI <= 300) {
                         eng_aqi_desc = 'Very Unhealthy';
                         zh_aqi_desc = '非常不健康';
                         color =
-                            'background: linear-gradient(180deg, #4D0036, #430029);';
+                            'linear-gradient(180deg, #4D0036, #430029)';
                         text = '#C6C1B7';
                     } else if (300 < AQI) {
                         eng_aqi_desc = 'Hazardous';
                         zh_aqi_desc = '危险';
                         color =
-                            'background: linear-gradient(180deg, #542100, #330600);';
+                            'linear-gradient(180deg, #542100, #330600)';
                         text = '#C6C1B7';
                     }
 
-                	$("#eng_desc").html(eng_weather);
-                	$("#zh_desc").html(zh_weather);
-                	$("#weatherimageHolder").html(
-                		'<img class="nomarginstuff" id="weatherimage" style="padding-right: ' +
-                        extraRightPadding + '" src=' +
-                        weatherImgSrc + '>');
-                	$("#temp_number").html(temperature + '˚')
+                    $("#eng_desc").html(eng_weather);
+                    $("#zh_desc").html(zh_weather);
+                    d3.select("#weatherimageHolder") // clears existing content
+                        .html('')
+                        .append("img")
+                            .attr("class", "nomarginstuff")
+                            .attr("id", "weatherimage")
+                            .style("padding-right", extraRightPadding)
+                            .attr("src", weatherImgSrc);
+                    $("#temp_number").html(temperature + '˚')
 
                     if (AQI > -1) { // this will prevent it from showing any negative numbers (negative numbers are false data)
-                        $("#aqi_boxHolder").html(
-                        		'<div class="nomarginstuff" id="aqi_box" style="' +
-	                            color + '; color: ' + text +
-	                            '">' +
-	                            '<p class="nomarginstuff right" id="eng_air_quality_title">' +
-	                            'Air Quality Index' + '</p>' +
-	                            '<p class="nomarginstuff right" id="zh_air_quality_title">' +
-	                            '空&nbsp气&nbsp质&nbsp量&nbsp指&nbsp数' +
-	                            '</p>' +
-	                            '<p class="nomarginstuff right" id="aqi_number">' +
-	                            AQI + '</p>' +
-	                            '<p class="nomarginstuff right" id="eng_aqi_desc">' +
-	                            eng_aqi_desc + '</p>' +
-	                            '<p class="nomarginstuff right" id="zh_aqi_desc">' +
-	                            zh_aqi_desc + '</p>' + '</div>'
-                        	)
+						aqidata = [
+							["eng_air_quality_title", "AirQuality Index"],
+							["zh_air_quality_title", "空 气 质 量 指 数"],
+							["aqi_number", AQI],
+							["eng_aqi_desc", eng_aqi_desc],
+							["zh_aqi_desc", zh_aqi_desc]
+						];               
+                        aqibox = d3.select("#aqi_boxHolder").html('')
+                        			.append("div")
+                        			.attr("id", "aqi_box")
+                        			.attr("class", "nomarginstuff")
+                        			.style("background", color)
+                        			.style("color", text);
+                        aqibox.selectAll("p").data(aqidata).enter()
+                        	.append("p")
+                        		.attr("class", "nomarginstuff right")
+                        		.attr("id", function(d){return d[0];})
+                        		.text(function(d){return d[1]});
                     }
                 }
             });
@@ -218,18 +223,6 @@ $(window).load(function() {
             success: function getData(data) {
                 var firstDateTimeLine = [];
                 var secondDateTimeLine = [];
-                var engMonthsKey = ['January', 'February',
-                    'March', 'April', 'May', 'June',
-                    'July', 'August', 'September',
-                    'October', 'November', 'December'
-                ];
-                var engWeekKey = ['Sunday', 'Monday',
-                    'Tuesday', 'Wednesday', 'Thursday',
-                    'Friday', 'Saturday'
-                ];
-                var zhWeekKey = ['星期日', '星期一', '星期二', '星期三',
-                    '星期四', '星期五', '星期六'
-                ];
 
                 for (i in data) {
                     var engString = "";
@@ -332,15 +325,15 @@ $(window).load(function() {
                 if (data[3].location) { 
                 // random test to confirm that the data is there... this makes sure the screen doesn't display the word NULL
                     for (i = 0; i < 4; i++) {
-                    	if (data[i].location ==
+                        if (data[i].location ==
                             'No location has been entered for this event.'
                         ) {
                             data[i].location =
                                 'Location To Be Determined';
                         }
 
-                    	$("#event" + String(i + 1)).html(
-							'<div class="name">' + data[
+                        $("#event" + String(i + 1)).html(
+                            '<div class="name">' + data[
                                 i].name + '</div>' +
                             '<div class="desc thin" id="date_time_1">' +
                             firstDateTimeLine[i] +
@@ -350,7 +343,7 @@ $(window).load(function() {
                             '</div>' +
                             '<div class="desc thin" id="location">' +
                             data[i].location + '</div>'
-                		);
+                        );
                     }
 
                 }
@@ -361,8 +354,8 @@ $(window).load(function() {
                 // alert("failed");
             }
         });
-		
-		$("#contentpane").css("display", "inline");
+        
+        $("#contentpane").css("display", "inline");
 
     } //end refresh()
 
