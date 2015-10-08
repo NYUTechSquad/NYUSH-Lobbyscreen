@@ -84,6 +84,7 @@ $(window).load(function() {
             weatherImgSrc = '';
             extraRightPadding = 0;
 
+            // Using the data saved from earlier, set properties
             info = WEATHERDATA[weather_id]
             if (info.hasNightFile) {
             	weatherImgSrc = info.nightfilename
@@ -134,38 +135,37 @@ $(window).load(function() {
                     zh_aqi_desc = '';
                     color = '';
                     text = '';
-                    // AQI = 301;
-                    // temperature = '00';
+
                     if (AQI <= 50) {
                         eng_aqi_desc = 'Good';
                         zh_aqi_desc = '健康';
                         color =
                             'background: linear-gradient(180deg, #00A300, #007E00);';
                         text = '#C6C1B7';
-                    } else if (AQI > 50 && AQI <= 100) {
+                    } else if (50 < AQI && AQI <= 100) {
                         eng_aqi_desc = 'Moderate';
                         zh_aqi_desc = '中等';
                         color =
                             'background: linear-gradient(180deg, #FFAF00, #C7A000);';
-                    } else if (AQI > 100 && AQI <= 150) {
+                    } else if (100 < AQI && AQI <= 150) {
                         eng_aqi_desc =
                             'Unhealthy for Sensitive Groups';
                         zh_aqi_desc = '对敏感人群不健康';
                         color =
                             'background: linear-gradient(180deg, #FFA200, #CF7200);';
-                    } else if (AQI > 150 && AQI <= 200) {
+                    } else if (150 < AQI && AQI <= 200) {
                         eng_aqi_desc = 'Unhealthy';
                         zh_aqi_desc = '不健康 ';
                         color =
                             'background: linear-gradient(180deg, #A91B00, #890B00);';
                         text = '#C6C1B7';
-                    } else if (AQI > 200 && AQI <= 300) {
+                    } else if (200 < AQI && AQI <= 300) {
                         eng_aqi_desc = 'Very Unhealthy';
                         zh_aqi_desc = '非常不健康';
                         color =
                             'background: linear-gradient(180deg, #4D0036, #430029);';
                         text = '#C6C1B7';
-                    } else if (AQI > 300) {
+                    } else if (300 < AQI) {
                         eng_aqi_desc = 'Hazardous';
                         zh_aqi_desc = '危险';
                         color =
@@ -173,43 +173,31 @@ $(window).load(function() {
                         text = '#C6C1B7';
                     }
 
-                    thispart = document.getElementById(
-                        'eng_desc');
-                    thispart.innerHTML = eng_weather;
-
-                    thispart = document.getElementById(
-                        'zh_desc');
-                    thispart.innerHTML = zh_weather;
-
-                    thispart = document.getElementById(
-                        'weatherimageHolder');
-                    thispart.innerHTML =
-                        '<img class="nomarginstuff" id="weatherimage" style="padding-right: ' +
+                	$("#eng_desc").html(eng_weather);
+                	$("#zh_desc").html(zh_weather);
+                	$("#weatherimageHolder").html(
+                		'<img class="nomarginstuff" id="weatherimage" style="padding-right: ' +
                         extraRightPadding + '" src=' +
-                        weatherImgSrc + '>';
-
-                    thispart = document.getElementById(
-                        'temp_number');
-                    thispart.innerHTML = temperature + '˚';
+                        weatherImgSrc + '>');
+                	$("#temp_number").html(temperature + '˚')
 
                     if (AQI > -1) { // this will prevent it from showing any negative numbers (negative numbers are false data)
-                        thispart = document.getElementById(
-                            'aqi_boxHolder');
-                        thispart.innerHTML =
-                            '<div class="nomarginstuff" id="aqi_box" style="' +
-                            color + '; color: ' + text +
-                            '">' +
-                            '<p class="nomarginstuff right" id="eng_air_quality_title">' +
-                            'Air Quality Index' + '</p>' +
-                            '<p class="nomarginstuff right" id="zh_air_quality_title">' +
-                            '空&nbsp气&nbsp质&nbsp量&nbsp指&nbsp数' +
-                            '</p>' +
-                            '<p class="nomarginstuff right" id="aqi_number">' +
-                            AQI + '</p>' +
-                            '<p class="nomarginstuff right" id="eng_aqi_desc">' +
-                            eng_aqi_desc + '</p>' +
-                            '<p class="nomarginstuff right" id="zh_aqi_desc">' +
-                            zh_aqi_desc + '</p>' + '</div>';
+                        $("#aqi_boxHolder").html(
+                        		'<div class="nomarginstuff" id="aqi_box" style="' +
+	                            color + '; color: ' + text +
+	                            '">' +
+	                            '<p class="nomarginstuff right" id="eng_air_quality_title">' +
+	                            'Air Quality Index' + '</p>' +
+	                            '<p class="nomarginstuff right" id="zh_air_quality_title">' +
+	                            '空&nbsp气&nbsp质&nbsp量&nbsp指&nbsp数' +
+	                            '</p>' +
+	                            '<p class="nomarginstuff right" id="aqi_number">' +
+	                            AQI + '</p>' +
+	                            '<p class="nomarginstuff right" id="eng_aqi_desc">' +
+	                            eng_aqi_desc + '</p>' +
+	                            '<p class="nomarginstuff right" id="zh_aqi_desc">' +
+	                            zh_aqi_desc + '</p>' + '</div>'
+                        	)
                     }
                 }
             });
@@ -344,16 +332,15 @@ $(window).load(function() {
                 if (data[3].location) { 
                 // random test to confirm that the data is there... this makes sure the screen doesn't display the word NULL
                     for (i = 0; i < 4; i++) {
-                        theEvent = document.getElementById(
-                            'event' + String(i + 1));
-                        if (data[i].location ==
+                    	if (data[i].location ==
                             'No location has been entered for this event.'
                         ) {
                             data[i].location =
                                 'Location To Be Determined';
                         }
-                        theEvent.innerHTML = (
-                            '<div class="name">' + data[
+
+                    	$("#event" + String(i + 1)).html(
+							'<div class="name">' + data[
                                 i].name + '</div>' +
                             '<div class="desc thin" id="date_time_1">' +
                             firstDateTimeLine[i] +
@@ -363,7 +350,7 @@ $(window).load(function() {
                             '</div>' +
                             '<div class="desc thin" id="location">' +
                             data[i].location + '</div>'
-                        );
+                		);
                     }
 
                 }
@@ -374,7 +361,8 @@ $(window).load(function() {
                 // alert("failed");
             }
         });
-        document.getElementById("contentpane").style.display = "inline";
+		
+		$("#contentpane").css("display", "inline");
 
     } //end refresh()
 
