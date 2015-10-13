@@ -26,15 +26,12 @@ function updateClock() {
         }
     }
 
-    $("#dateHeader").html(
-            ' <div class="nomarginstuff date">' + engWeekKey[ww] + ', ' +
-            engMonthsKey[mm] + " " + dd + '</div>'
-            + '<div class="nomarginstuff date">' + (mm + 1) + '月' + dd + '日' +
-            ",&nbsp&nbsp" + zhWeekKey[ww] + '</div> '
-        );
-    $("#sh_clock").html(
-            '' + h + ":" + m + " " + AP + ''
-        );
+    var dateheader = d3.select("#dateHeader").html('');
+    dateheader.append("div").attr("class","nomarginstuff date")
+                    		.text(engWeekKey[ww] + ', ' + engMonthsKey[mm] + " " + dd);
+    dateheader.append("div").attr("class","nomarginstuff date")
+                    		.text((mm + 1) + '月' + dd + '日' + ",  " + zhWeekKey[ww]);
+    $("#sh_clock").html('' + h + ":" + m + " " + AP + '');
 }
 
 JSONFILE = %s // to be replaced server-side using Python
@@ -48,7 +45,7 @@ $(window).load(function() {
     updateClock();
     window.setInterval(updateClock, 1000);
     ///////////////////////////// 
-    var weather_main = ""; //variable "data" refer to the JSON data we got
+    var weather_main = ""; //variable "data" refers to the JSON data we got
     var weather_description = "";
     var wind = 0;
     var temperature = 1;
@@ -67,7 +64,7 @@ $(window).load(function() {
                 daytime = true;
             }
 
-            weather_main = data.weather[0].main; //variable "data" refer to the JSON data we got
+            weather_main = data.weather[0].main; //variable "data" refers to the JSON data we got
             eng_weather = '';
             zh_weather = data.weather[0].description;
             weather_id = data.weather[0].id;
@@ -78,7 +75,7 @@ $(window).load(function() {
             extraRightPadding = 0;
 
             // Using the data saved from earlier, set properties
-            info = WEATHERDATA[weather_id]
+            var info = WEATHERDATA[weather_id]
             if (info.hasNightFile) {
                 weatherImgSrc = info.nightfilename
             }
@@ -90,7 +87,7 @@ $(window).load(function() {
             extraRightPadding = PADDINGDATA[weatherImgSrc]
 
             // give it the proper path
-            weatherImgSrc = "images/" + weatherImgSrc
+            weatherImgSrc = "images/" + weatherImgSrc;
 
             eng_weather = eng_weather.split(' ').join('</br>'); // so each word goes on its own line of text
 
@@ -99,7 +96,7 @@ $(window).load(function() {
 			});
             
             function aqi(data) {
-        	// This is a manual parse of XML data.
+        	/*// This is a manual parse of XML data.
         	// Is not pretty, but works and is legacy.
                 var count = null;
                 var count2 = null;
@@ -120,7 +117,10 @@ $(window).load(function() {
                     }
                 }
                 var AQI = (data.slice(count + 1,
-                    count2));
+                    count2));*/
+			// because the xml source is down for now, the data will be scraped
+			// from http://www.semc.gov.cn/home/index.aspx via the server.
+				var AQI = +data;
 
                 var AQItype = '';
                 if (AQI < 0) {
@@ -184,7 +184,6 @@ $(window).load(function() {
         var jsonMimeType = "application/json";
         $.ajax({
             type: "GET",
-            // contentType: "application/json; charset=utf-8",
             url: "cherrypy/text",
             beforeSend: function(x) {
                 if (x && x.overrideMimeType) {
@@ -323,7 +322,7 @@ $(window).load(function() {
 
             },
             error: function() {
-                // alert("failed");
+                console.log("Event data failed to load.");
             }
         });
         
@@ -332,9 +331,7 @@ $(window).load(function() {
     } //end refresh()
 
     refresh();
-    setInterval(function() {
-        refresh(); //this will run after every certain time
-    }, 600000); //10mins
+    setInterval(refresh, 1000 * 60 * 10); // refresh every 10mins
 
 
 

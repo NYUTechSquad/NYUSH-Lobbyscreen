@@ -21,6 +21,7 @@ import threading
 import cherrypy
 import json
 import codecs
+import bs4
 
 cherrypy.config.update({'environment': 'embedded'})
 
@@ -67,7 +68,9 @@ class Root(object):
     weather.exposed = True
 
     def aqi(self):
-        return requests.get(r"http://www.stateair.net/web/rss/1/4.xml").text 
+        page = requests.get(r"http://www.semc.gov.cn/home/index.aspx").text
+        soup = bs4.BeautifulSoup(page, 'lxml')
+        return soup.select("span.big")[0].get_text().strip()
     aqi.exposed = True
 
 
