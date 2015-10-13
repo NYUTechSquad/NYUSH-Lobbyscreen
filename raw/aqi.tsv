@@ -1,0 +1,7 @@
+none	No data available	无数据	#627880	#FFFFFF
+good	Good	健康	linear-gradient(180deg, #00A300, #007E00)	#C6C1B7
+moderate	Moderate	中等	linear-gradient(180deg, #FFAF00, #C7A000)	
+littleunhealthy	Unhealthy for Sensitive Groups	对敏感人群不健康	linear-gradient(180deg, #FFA200, #CF7200)	
+unhealthy	Unhealthy	不健康	linear-gradient(180deg, #A91B00, #890B00)	#C6C1B7
+veryunhealthy	Very Unhealthy	非常不健康	linear-gradient(180deg, #4D0036, #430029)	#C6C1B7
+hazardous	Hazardous	危险	linear-gradient(180deg, #542100, #330600)	#C6C1B7

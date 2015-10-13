@@ -38,8 +38,9 @@ function updateClock() {
 }
 
 JSONFILE = %s // to be replaced server-side using Python
-WEATHERDATA = JSONFILE["weathernames"]
-PADDINGDATA = JSONFILE["padding"]
+;WEATHERDATA = JSONFILE["weathernames"];
+PADDINGDATA = JSONFILE["padding"];
+AQIFORMATTING = JSONFILE["aqi"];
 
 ///////////////////////////// ///////////////////////////// ///////////////////////////// 
 
@@ -53,15 +54,7 @@ $(window).load(function() {
     var temperature = 1;
 
     function refresh() {
-        $.ajax({
-            type: "GET",
-            url: "http://api.openweathermap.org/data/2.5/weather?q=shanghai&lang=zh_cn",
-            dataType: "json",
-            success: processData,
-            error: function() {
-                    console.log("Weather data request failed.");
-                } //put function statements into these {}. They run when the request is failed.
-        });
+		d3.json("cherrypy/weather", function(e,data){processData(data);});
 
         function processData(data) ///the function that will run when the request is succeeded
         {
@@ -101,111 +94,90 @@ $(window).load(function() {
 
             eng_weather = eng_weather.split(' ').join('</br>'); // so each word goes on its own line of text
 
-            //Get AQI and display:
-            $.ajax({
-                url: 'http://whateverorigin.org/get?url=' +
-                    encodeURIComponent(
-                        'http://www.stateair.net/web/rss/1/4.xml'
-                    ) + '&callback=?',
-                dataType: 'json',
-                success: function(data) {
-                    var contentJson = data.contents;
-                    var count = null;
-                    var count2 = null;
-                    for (count = 500; count < 1200; count +=
-                        1) {
-                        if (contentJson[count - 3] == "A" &&
-                            contentJson[count - 2] == "Q" &&
-                            contentJson[count - 1] == "I") {
-                            count2 = count;
-                            for (count2; count2 < count +
-                                10; count2 += 1) {
-                                if (contentJson[count2] ==
-                                    "<") {
-                                    break;
-                                }
+			d3.text("cherrypy/aqi", function(e, data){
+				aqi(data);
+			});
+            
+            function aqi(data) {
+        	// This is a manual parse of XML data.
+        	// Is not pretty, but works and is legacy.
+                var count = null;
+                var count2 = null;
+                for (count = 500; count < 1200; count +=
+                    1) {
+                    if (data[count - 3] == "A" &&
+                        data[count - 2] == "Q" &&
+                        data[count - 1] == "I") {
+                        count2 = count;
+                        for (count2; count2 < count +
+                            10; count2 += 1) {
+                            if (data[count2] ==
+                                "<") {
+                                break;
                             }
-                            break;
                         }
-                    }
-                    var AQI = (contentJson.slice(count + 1,
-                        count2));
-
-                    eng_aqi_desc = ''; // add in data from feed
-                    zh_aqi_desc = '';
-                    color = '';
-                    text = '';
-
-                    if (AQI <= 50) {
-                        eng_aqi_desc = 'Good';
-                        zh_aqi_desc = '健康';
-                        color =
-                            'linear-gradient(180deg, #00A300, #007E00)';
-                        text = '#C6C1B7';
-                    } else if (50 < AQI && AQI <= 100) {
-                        eng_aqi_desc = 'Moderate';
-                        zh_aqi_desc = '中等';
-                        color =
-                            'linear-gradient(180deg, #FFAF00, #C7A000)';
-                    } else if (100 < AQI && AQI <= 150) {
-                        eng_aqi_desc =
-                            'Unhealthy for Sensitive Groups';
-                        zh_aqi_desc = '对敏感人群不健康';
-                        color =
-                            'linear-gradient(180deg, #FFA200, #CF7200)';
-                    } else if (150 < AQI && AQI <= 200) {
-                        eng_aqi_desc = 'Unhealthy';
-                        zh_aqi_desc = '不健康 ';
-                        color =
-                            'linear-gradient(180deg, #A91B00, #890B00)';
-                        text = '#C6C1B7';
-                    } else if (200 < AQI && AQI <= 300) {
-                        eng_aqi_desc = 'Very Unhealthy';
-                        zh_aqi_desc = '非常不健康';
-                        color =
-                            'linear-gradient(180deg, #4D0036, #430029)';
-                        text = '#C6C1B7';
-                    } else if (300 < AQI) {
-                        eng_aqi_desc = 'Hazardous';
-                        zh_aqi_desc = '危险';
-                        color =
-                            'linear-gradient(180deg, #542100, #330600)';
-                        text = '#C6C1B7';
-                    }
-
-                    $("#eng_desc").html(eng_weather);
-                    $("#zh_desc").html(zh_weather);
-                    d3.select("#weatherimageHolder") // clears existing content
-                        .html('')
-                        .append("img")
-                            .attr("class", "nomarginstuff")
-                            .attr("id", "weatherimage")
-                            .style("padding-right", extraRightPadding)
-                            .attr("src", weatherImgSrc);
-                    $("#temp_number").html(temperature + '˚')
-
-                    if (AQI > -1) { // this will prevent it from showing any negative numbers (negative numbers are false data)
-						aqidata = [
-							["eng_air_quality_title", "AirQuality Index"],
-							["zh_air_quality_title", "空 气 质 量 指 数"],
-							["aqi_number", AQI],
-							["eng_aqi_desc", eng_aqi_desc],
-							["zh_aqi_desc", zh_aqi_desc]
-						];               
-                        aqibox = d3.select("#aqi_boxHolder").html('')
-                        			.append("div")
-                        			.attr("id", "aqi_box")
-                        			.attr("class", "nomarginstuff")
-                        			.style("background", color)
-                        			.style("color", text);
-                        aqibox.selectAll("p").data(aqidata).enter()
-                        	.append("p")
-                        		.attr("class", "nomarginstuff right")
-                        		.attr("id", function(d){return d[0];})
-                        		.text(function(d){return d[1]});
+                        break;
                     }
                 }
-            });
+                var AQI = (data.slice(count + 1,
+                    count2));
+
+                var AQItype = '';
+                if (AQI < 0) {
+                	AQItype = 'none';
+                	AQI = 'N/A';
+                } else if (AQI <= 50) {
+                	AQItype = 'good';
+                } else if (AQI <= 100) {
+                	AQItype = 'moderate';
+                } else if (AQI <= 150) {
+                	AQItype = 'littleunhealthy';
+                } else if (AQI <= 200) {
+                	AQItype = 'unhealthy';
+                } else if (AQI <= 300) {
+                	AQItype = 'veryunhealthy';
+                } else {
+                	AQItype = 'hazardous';
+                }
+
+                var F = AQIFORMATTING[AQItype]; // get formatting data from json
+                var eng_aqi_desc = F["en"];
+                var zh_aqi_desc = F["cn"];
+                var color = F["color"];
+                var text = F["textcolor"];
+
+                $("#eng_desc").html(eng_weather);
+                $("#zh_desc").html(zh_weather);
+
+                d3.select("#weatherimageHolder") // clears existing content
+                    .html('')
+                    .append("img")
+                        .attr("class", "nomarginstuff")
+                        .attr("id", "weatherimage")
+                        .style("padding-right", extraRightPadding)
+                        .attr("src", weatherImgSrc);
+                $("#temp_number").html(temperature + '˚')
+
+				var aqidata = [
+						["eng_air_quality_title", "AirQuality Index"],
+						["zh_air_quality_title", "空 气 质 量 指 数"],
+						["aqi_number", AQI],
+						["eng_aqi_desc", eng_aqi_desc],
+						["zh_aqi_desc", zh_aqi_desc]
+					];
+				// semi-automatically filling in all the data for AQI display
+                aqibox = d3.select("#aqi_boxHolder").html('')
+                			.append("div")
+                			.attr("id", "aqi_box")
+                			.attr("class", "nomarginstuff")
+                			.style("background", color)
+                			.style("color", text);
+                aqibox.selectAll("p").data(aqidata).enter()
+                	.append("p")
+                		.attr("class", "nomarginstuff right")
+                		.attr("id", function(d){return d[0];})
+                		.text(function(d){return d[1]});
+            }
 
         }
         ///////////////////////////Get json data from server
