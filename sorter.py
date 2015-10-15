@@ -4,6 +4,7 @@ import json
 import sys
 import os
 import codecs
+from dateutil import parser
 
 orgIDs = {
     "Campus Life": 86405,
@@ -24,8 +25,25 @@ def findSoonestOccurrence(timestr, occs):
     # If all occurrences have passed, return None
     return None
 
+def prettifyDate(datestring):
+    # Turn the API-style date into an array of date things.
+    date = parser.parse(datestring)
+    return [date.year, date.month, date.day, date.hour, date.minute, date.weekday()]
+
+def prettifyEvents(events):
+    out = []
+    for e in events:
+        out.append({
+            "name"      : e["name"],
+            "location"  : e["location"],
+            "start_time": prettifyDate(e["start_time"]),
+            "end_time"  : prettifyDate(e["end_time"]),
+            "is_all_day": e["is_all_day"]
+            })
+    return out
+
 jsonfpath = os.path.abspath(os.path.join(os.path.dirname(__file__), "testcase.json"))
-def sort(orgID, TESTING=False, DUMPTOFILE=False):
+def sort(orgID, TESTING=False, DUMPTOFILE=False, LEGACY=False):
     apikeydir = os.path.abspath(os.path.join(os.path.dirname(__file__), "apikey.sensitive"))
     with open(apikeydir) as f:
         apikey = f.read()
@@ -47,6 +65,7 @@ def sort(orgID, TESTING=False, DUMPTOFILE=False):
         import requests
         response = requests.get(url).text
         if DUMPTOFILE:
+            print("Dumping to file...")
             with codecs.open(jsonfpath, "w", "utf-8") as f:
                 f.write(response)
 
@@ -61,20 +80,26 @@ def sort(orgID, TESTING=False, DUMPTOFILE=False):
                     "name"      :event["name"],
                     "location"  :event["location"],
                     "start_time":occ["starts_at"],
-                    "end_time"  :occ["ends_at"]
+                    "end_time"  :occ["ends_at"],
+                    "is_all_day":occ["is_all_day"]
                     })
     
     # Sort the found events to find the soonest 4.
     out = sorted(eventsfound, key=lambda x: x["start_time"])
-    return out[:4]
+    if LEGACY:
+        return out[:4]
+    return prettifyEvents(out[:4])
 
-def sortAll(TESTING=False, DUMPTOFILE=False):
+
+def sortAll(TESTING=False, DUMPTOFILE=False, LEGACY=False):
     AllEvents = [sort(x, TESTING, DUMPTOFILE) for x in orgIDs.values()]
     combined = []
     for e in AllEvents:
         combined.extend(e)
     out = sorted(combined, key=lambda x: x["start_time"])
-    return out[:4]
+    if LEGACY:
+        return out[:4]
+    return prettifyEvents(out[:4])
     
 
 if __name__=="__main__":
@@ -90,4 +115,4 @@ if __name__=="__main__":
     except:
         DUMPTOFILE = False
 
-    pprint(sortAll(TESTING, DUMPTOFILE)) # 'refresh' the testcase when run standalone
+    pprint(sort(86405, TESTING, DUMPTOFILE)) # 'refresh' the testcase when run standalone

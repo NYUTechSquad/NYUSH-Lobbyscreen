@@ -43,19 +43,23 @@ class Root(object):
         return 'Hello World!%d' % (self.counter)
     index.exposed = True
 
-    def text(self):
+    def events(self):
         try:
             cherrypy.response.headers['Content-Type']= 'application/json'
             TESTING = True
             if TESTING:
-                r = sorter.sort(86405, TESTING=True)
+                r = sorter.sort(86405, TESTING=True, LEGACY=False)
             else:
                 r = sorter.sortAll()
             # Let's have a test case.
             return json.dumps(r)
         except BaseException as e:
             logger.error("<<<<<<PYTHON STDOUT>>>>>> " + str(e))
-    text.exposed = True
+    events.exposed = True
+
+    def legacyevents(self):
+        return json.dumps(sorter.sort(86405, TESTING=True, LEGACY=True))
+    legacyevents.exposed = True
 
     def tvjs(self):
         cherrypy.response.headers['Content-Type'] = 'text/javascript'

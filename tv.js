@@ -6,6 +6,8 @@ var engWeekKey = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday',
 ];
 var zhWeekKey = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
 
+
+
 /////////////////////////////////////////////////////////////////////////////////////////// 
 function updateClock() {
     var today = new Date();
@@ -41,7 +43,23 @@ AQIFORMATTING = JSONFILE["aqi"];
 
 ///////////////////////////// ///////////////////////////// ///////////////////////////// 
 
+String.prototype.format = function() {
+        var str = this.toString();
+        if (!arguments.length)
+            return str;
+        var args = typeof arguments[0],
+            args = (("string" == args || "number" == args) ? arguments : arguments[0]);
+        for (arg in args)
+            str = str.replace(RegExp("\\{" + arg + "\\}", "gi"), args[arg]);
+        return str;
+    }
+
+
 $(window).load(function() {
+	// Code for format borrowed from stackoverflow's formatUnicorn.
+	// Useage: "Hello, {name}, I'm {adj} that you can't {verb}.".format({"name":"Dave", 
+	//                  "adj":"glad", "verb":"talk"})
+
     updateClock();
     window.setInterval(updateClock, 1000);
     ///////////////////////////// 
@@ -181,151 +199,87 @@ $(window).load(function() {
 
         }
         ///////////////////////////Get json data from server
-        var jsonMimeType = "application/json";
-        $.ajax({
-            type: "GET",
-            url: "cherrypy/text",
-            beforeSend: function(x) {
-                if (x && x.overrideMimeType) {
-                    x.overrideMimeType(jsonMimeType);
-                }
-            },
-            dataType: "json",
-            success: function getData(data) {
-                var firstDateTimeLine = [];
-                var secondDateTimeLine = [];
+        function processEventData(data) {
+            var datestrings = [];
 
-                for (i in data) {
-                    var engString = "";
-                    var zhString = "";
-                    var thisStartWrongTimezone = new Date((
-                        data[i].start_time || "").replace(
-                        /-/g, "/").replace(/[TZ]/g,
-                        " "));
-                    var thisEndWrongTimezone = new Date((
-                        data[i].end_time || "").replace(
-                        /-/g, "/").replace(/[TZ]/g,
-                        " "));
-                    var thisStart = new Date((
-                        thisStartWrongTimezone.getTime()
-                    ) + 28800000)
-                    var thisEnd = new Date((
-                        thisEndWrongTimezone.getTime()
-                    ) + 28800000)
-                    if (data[i].start_time.length > 10) {
-                        var startTime = '';
-                        var endTime = '';
-                        var timeString = '';
-                        var startAmPm = 'AM';
-                        var hours = thisStart.getHours();
-                        if (hours > 11) {
-                            startAmPm = 'PM';
-                            if (hours > 12) {
-                                hours -= 12;
-                            }
-                        }
-                        var mins = ("0" + thisStart.getMinutes())
-                            .slice(-2);
-                        startTime = hours + ':' + mins +
-                            ' ' + startAmPm;
-                        var startDate = engMonthsKey[
-                                thisStart.getMonth()] + ' ' +
-                            thisStart.getDate();
-                        timeString += startTime;
-                        var endAmPm = 'AM';
-                        var hours = thisEnd.getHours();
-                        if (hours > 11) {
-                            endAmPm = 'PM';
-                            if (hours > 12) {
-                                hours -= 12;
-                            }
-                        }
-                        var mins = ("0" + thisEnd.getMinutes())
-                            .slice(-2);
-                        endTime = hours + ':' + mins + ' ' +
-                            endAmPm;
-                        var endDate = engMonthsKey[
-                                thisStart.getMonth()] + ' ' +
-                            thisStart.getDate();
+            for (var i in data) {
+	            	var startdate = data[i]["start_time"];
+	            	var enddate   = data[i]["end_time"];
+	            	var datestr = "{wkday}, {enmonth} {date} | {month}月{date}日 {cnwkday}";
+	            	datestr = datestr.format({
+	            		wkday  : engWeekKey[startdate[5]],
+	            		enmonth: engMonthsKey[startdate[1]],
+	            		date   : startdate[2],
+	            		month  : startdate[1],
+	            		cnwkday: zhWeekKey[startdate[5]]
+        			});
+        			// If it is an all day event, timestring only says "All Day"
+        			var timestr = "";
+        			if (data[i]["is_all_day"]) {
+        				timestr = "All day";
+        			} else {
+        				// Zero-pad minutes, turn 24 hour times into 12 hour times.
+	        			timestr = "{h_start}:{mm_start} {AP_start} - {h_end}:{mm_end} {AP_end}";
+	        			var mm_start = startdate[4];
+	        			if (mm_start < 10) {
+	        				mm_start = "0" + mm_start;
+	        			}
+	        			var mm_end = enddate[4];
+	        			if (mm_end < 10) {
+	        				mm_end = "0" + mm_end;
+	        			}
+	        			var h_start = startdate[3];
+	        			var AP_start = "AM";
+	        			if (h_start > 12) {
+	        				h_start -= 12;
+	        				AP_start = "PM";
+	        			}
+	        			var h_end = enddate[3];
+	        			var AP_end = "AM";
+	        			if (h_end > 12) {
+	        				h_end -= 12;
+	        				AP_end = "PM";
+	        			}
+	        			timestr = timestr.format({
+	        				h_start : h_start,
+	        				mm_start: mm_start,
+	        				h_end   : h_end,
+	        				mm_end  : mm_end,
+	        				AP_start: AP_start,
+	        				AP_end  : AP_end
+	        			});
+        			}        			
 
-                        timeString += ' - ' + endTime;
-                    } else {
-                        timeString = 'All Day';
-                    }
+        			datestrings.push([datestr, timestr]);
+            	}
+            
 
-                    var firstLine = '';
-                    if (startDate == endDate) {
-
-                        engString += engWeekKey[thisStart.getDay()] +
-                            ', ' + engMonthsKey[thisStart.getMonth()] +
-                            ' ' + thisStart.getDate();
-
-                        zhString += (thisStart.getMonth() +
-                                1) + '月' + thisStart.getDate() +
-                            '日, ' + zhWeekKey[thisStart.getDay()];
-                        firstLine = engString +
-                            '&nbsp&nbsp|&nbsp&nbsp' +
-                            zhString;
-                        secondLine = timeString;
-
-                    } else {
-                        engString += engWeekKey[thisStart.getDay()] +
-                            ', ' + engMonthsKey[thisStart.getMonth()] +
-                            ' ' + thisStart.getDate() + ' ' +
-                            startTime + ' - ' + engWeekKey[
-                                thisEnd.getDay()] + ', ' +
-                            engMonthsKey[thisEnd.getMonth()] +
-                            ' ' + thisEnd.getDate() + ', ' +
-                            endTime;
-                        zhString += (thisStart.getMonth() +
-                                1) + '月' + thisStart.getDate() +
-                            '日, ' + zhWeekKey[thisStart.getDay()] +
-                            ', ' + startTime + ' - ' + (
-                                thisEnd.getMonth() + 1) +
-                            '月' + thisEnd.getDate() + '日, ' +
-                            zhWeekKey[thisEnd.getDay()] +
-                            ', ' + endTime;
-                        firstLine = engString;
-                        secondLine = zhString;
-                    }
-
-                    firstDateTimeLine.push(firstLine);
-                    secondDateTimeLine.push(secondLine);
-                }
-                var i;
-                if (data[3].location) { 
-                // random test to confirm that the data is there... this makes sure the screen doesn't display the word NULL
-                    for (i = 0; i < 4; i++) {
-                        if (data[i].location ==
-                            'No location has been entered for this event.'
-                        ) {
-                            data[i].location =
-                                'Location To Be Determined';
-                        }
-
-                        $("#event" + String(i + 1)).html(
-                            '<div class="name">' + data[
-                                i].name + '</div>' +
-                            '<div class="desc thin" id="date_time_1">' +
-                            firstDateTimeLine[i] +
-                            '</div>' +
-                            '<div class="desc thin" id="date_time_2">' +
-                            secondDateTimeLine[i] +
-                            '</div>' +
-                            '<div class="desc thin" id="location">' +
-                            data[i].location + '</div>'
-                        );
-                    }
-
+        	var leftstuff = d3.select("#alltheleftstuff").html('');
+        	for (i in data) {
+        		if (data[i].location == 'No location has been entered for this event.') {
+                    data[i].location = 'Location To Be Determined';
                 }
 
+                var classed = "";
+                if (i != data.length-1){
+                	classed = "leftcontent child bottomborder";
+                } else {
+                	classed = "leftcontent child";
+                }
+                var eventfield = leftstuff.append("div").attr("class",classed)
+                                          .attr("id","event" + (+i+1));
+                eventfield.append("div").attr("class","name").text(data[i].name);
+                eventfield.append("div").attr('class',"desc thin datetime1")
+                          .text(datestrings[i][0]);
+                eventfield.append("div").attr('class',"desc thin datetime2")
+                		  .text(datestrings[i][1]);
+                eventfield.append("div").attr('class',"desc thin datetime3")
+                		  .text(data[i].location);
+        	}
+        }
 
-            },
-            error: function() {
-                console.log("Event data failed to load.");
-            }
-        });
-        
+        d3.json("cherrypy/events", function(e,data) {processEventData(data);});
+       
         $("#contentpane").css("display", "inline");
 
     } //end refresh()
