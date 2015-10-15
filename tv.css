@@ -155,35 +155,6 @@ background-color: inherit;
 color: #413641;
 }
 
-#date_time_1 {
-font-family: gotham, "Noto Sans CJK SC";
-font-weight: 500;
-font-size: 3.0vh;
-line-height: 3.5vh;
-color: #716671;
-white-space: nowrap;
-text-overflow: ellipsis;
-overflow: hidden;
-}
-
-#date_time_2 {
-font-family: gotham-light, "gotham-light", "Gotham Light", gotham, "Noto Sans CJK SC";
-font-size: 2.9vh;
-line-height: 3.6vh;
-white-space: nowrap;
-text-overflow: ellipsis;
-overflow: hidden;
-}
-
-#location {
-font-family: gotham-light, "gotham-light", "Gotham Light", gotham, "Noto Sans CJK SC";
-font-size: 2.9vh;
-line-height: 3.0vh;
-white-space: nowrap;
-text-overflow: ellipsis;
-overflow: hidden;
-}
-
 .thin {
 font-weight: 400;
 }
@@ -256,9 +227,6 @@ font-size: inherit;
 padding: 0pt;
 margin: 0pt;
 border: 0pt;
-font-size: 3.25vh;
-line-height: 3.6vh;
-overflow: visible;
 }
 
 #weather_desc {
@@ -626,4 +594,33 @@ border-style: solid;
 border-color: #716161;
 /*border-width: 0.18vh;*/
 box-shadow: 0.5pt 0.5pt 5pt #444;
+}
+
+.datetime1 {
+font-family: gotham, "Noto Sans CJK SC";
+font-weight: 500;
+font-size: 3.0vh;
+line-height: 3.5vh;
+color: #716671;
+white-space: nowrap;
+text-overflow: ellipsis;
+overflow: hidden;
+}
+
+.datetime2 {
+font-family: gotham-light, "gotham-light", "Gotham Light", gotham, "Noto Sans CJK SC";
+font-size: 2.9vh;
+line-height: 3.6vh;
+white-space: nowrap;
+text-overflow: ellipsis;
+overflow: hidden;
+}
+
+.location {
+font-family: gotham-light, "gotham-light", "Gotham Light", gotham, "Noto Sans CJK SC";
+font-size: 2.9vh;
+line-height: 3.0vh;
+white-space: nowrap;
+text-overflow: ellipsis;
+overflow: hidden;
 }
