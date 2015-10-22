@@ -6,9 +6,6 @@ var engWeekKey = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday',
 ];
 var zhWeekKey = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
 
-
-
-/////////////////////////////////////////////////////////////////////////////////////////// 
 function updateClock() {
     var today = new Date();
     var h = today.getHours();
@@ -41,8 +38,9 @@ JSONFILE = %s // to be replaced server-side using Python
 PADDINGDATA = JSONFILE["padding"];
 AQIFORMATTING = JSONFILE["aqi"];
 
-///////////////////////////// ///////////////////////////// ///////////////////////////// 
-
+// Code for format borrowed from stackoverflow's formatUnicorn.
+// Useage: "Hello, {name}, I'm {adj} that you can't {verb}.".format({"name":"Dave", 
+//                  "adj":"glad", "verb":"talk"})
 String.prototype.format = function() {
         var str = this.toString();
         if (!arguments.length)
@@ -54,12 +52,21 @@ String.prototype.format = function() {
         return str;
     }
 
+function onWindowResize() {
+    var width = document.body.clientWidth;
+    if (width < 800) {
+        d3.select("#alltherightstuff").style("display", "none");
+        d3.select("")
+    } else {
+        d3.select("#alltherightstuff").style("display", null);
+    }
+}
 
 $(window).load(function() {
-	// Code for format borrowed from stackoverflow's formatUnicorn.
-	// Useage: "Hello, {name}, I'm {adj} that you can't {verb}.".format({"name":"Dave", 
-	//                  "adj":"glad", "verb":"talk"})
-
+    // Link the onresize function to the event
+    onWindowResize();
+    d3.select(window).on("resize", onWindowResize);
+    // Initalize clock
     updateClock();
     window.setInterval(updateClock, 1000);
     ///////////////////////////// 
@@ -157,7 +164,7 @@ $(window).load(function() {
                 } else {
                 	AQItype = 'hazardous';
                 }
-
+                
                 var F = AQIFORMATTING[AQItype]; // get formatting data from json
                 var eng_aqi_desc = F["en"];
                 var zh_aqi_desc = F["cn"];
@@ -208,7 +215,7 @@ $(window).load(function() {
 	            	var datestr = "{wkday}, {enmonth} {date} | {month}月{date}日 {cnwkday}";
 	            	datestr = datestr.format({
 	            		wkday  : engWeekKey[startdate[5]],
-	            		enmonth: engMonthsKey[startdate[1]],
+	            		enmonth: engMonthsKey[startdate[1]-1],
 	            		date   : startdate[2],
 	            		month  : startdate[1],
 	            		cnwkday: zhWeekKey[startdate[5]]
@@ -268,7 +275,11 @@ $(window).load(function() {
                 }
                 var eventfield = leftstuff.append("div").attr("class",classed)
                                           .attr("id","event" + (+i+1));
-                eventfield.append("div").attr("class","name").text(data[i].name);
+                eventfield.append("div").attr("class","name")
+                          .append("a").text(data[i].name)
+                          .attr("href", "https://orgsync.com/" + data[i].orgid 
+                            + "/events/" + data[i].id)
+                          .attr("class", "secretlink");
                 eventfield.append("div").attr('class',"desc thin datetime1")
                           .text(datestrings[i][0]);
                 eventfield.append("div").attr('class',"desc thin datetime2")

@@ -28,7 +28,7 @@ def findSoonestOccurrence(timestr, occs):
 def prettifyDate(datestring):
     # Turn the API-style date into an array of date things.
     date = parser.parse(datestring)
-    return [date.year, date.month, date.day, date.hour, date.minute, date.weekday()]
+    return [date.year, date.month, date.day, date.hour, date.minute, date.weekday()+1]
 
 def prettifyEvents(events):
     out = []
@@ -38,7 +38,9 @@ def prettifyEvents(events):
             "location"  : e["location"],
             "start_time": prettifyDate(e["start_time"]),
             "end_time"  : prettifyDate(e["end_time"]),
-            "is_all_day": e["is_all_day"]
+            "is_all_day": e["is_all_day"],
+            "id"        : e["id"],
+            "orgid"     : e["orgid"]
             })
     return out
 
@@ -81,7 +83,9 @@ def sort(orgID, TESTING=False, DUMPTOFILE=False, LEGACY=False):
                     "location"  :event["location"],
                     "start_time":occ["starts_at"],
                     "end_time"  :occ["ends_at"],
-                    "is_all_day":occ["is_all_day"]
+                    "is_all_day":occ["is_all_day"],
+                    "id"        :event["id"],
+                    "orgid"     :event["org_id"]
                     })
     
     # Sort the found events to find the soonest 4.
@@ -106,6 +110,7 @@ if __name__=="__main__":
     from pprint import pprint
     import sys
 
+    print sys.argv
     try:
         TESTING = True if sys.argv[1] == 't' else False
     except:

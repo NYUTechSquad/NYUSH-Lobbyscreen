@@ -1,2 +1,3 @@
 *.sensitive
 jquery.js
+python-dateutil-1.5/*
