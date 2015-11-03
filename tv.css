@@ -137,12 +137,11 @@ padding-top: 2.68vh; /* the padding is built in to the top element */
 }
 
 .alltherightstuff { /* This is the right weather displaying part. */
-overflow: hidden;
-color: inherit;
-white-space: normal;
-/* text-align: center; */
-flex: 1;
-color: #615151;
+  overflow: hidden;
+  color: inherit;
+  white-space: normal;
+  /*flex: 1;*/
+  color: #615151;
 }
 
 .weatherMain {
@@ -237,35 +236,27 @@ font-weight: 200;
 text-transform: uppercase;
 font-size: 3vh;
 color: red;
-/*text-shadow: 0.5pt 0.5pt 2pt green;*/
-}
-
-#weather_title {
-font-family: "gotham-medium", gotham-medium, gotham;
-line-height: 6vh;
-font-size: 5vh;
-text-align: right;
-clear: left;
+display:table-row;
 }
 
 #weatherimage {
-height: 15vh;
-opacity: 0.50;
-padding-top: 3vh;
-/*padding-right: 2.8vw;*/
-/*padding-right: 3.5vw;*/
-/*float: center;*/
-/*filter: drop-shadow(5pt 5pt 10pt yellow);*/
+  opacity: 0.50;
+  padding-right: 0;
 }
 
 #weatherimageHolder {
-/*float: center;*/
+  display:table-cell;
+}
+
+.weatherText {
+  display: table-cell;
+  vertical-align: middle;
 }
 
 #weather_desc_table{
-overflow: hidden;
-padding: 0vh 0vh 0vh 0vh;
-padding-top: 2vh;
+  /*display:table-row;*/
+  text-align:center;
+  padding:0;
 }
 
 table {
@@ -292,16 +283,18 @@ text-align: left;
 }
 
 .right {
-text-align: right;
+  `text-align: right;
 }
 
 .weatherDesc {
-text-align: center;
+  text-align: center;
+  display:table-row;
+  vertical-align: middle
+  padding:0;
+  padding-right: 1vw;
 }
 
-#weather_desc_table {
-margin-top: 1.75vh;
-}
+
 
 .leftTitle {
 line-height: 5.2vh;
@@ -320,15 +313,17 @@ font-family: gotham-light;
 }*/
 
 #weather_title {
-font-family: "Oswald", gotham-medium, "Gotham Medium", "gotham-medium", gotham, "Noto Sans CJK SC";
-font-size: 2.95vw;
-font-size: 3.1vw;
-font-weight: 800;
-text-align: center;
-vertical-align: top;
-text-shadow: 0pt 0pt 10pt #CCC;
-overflow: visible;
-white-space: nowrap;
+  font-family: "Oswald", gotham-medium, "Gotham Medium", "gotham-medium", gotham, "Noto Sans CJK SC";
+  font-size: 2.95vw;
+  font-weight: 800;
+  text-align: center;
+  vertical-align: top;
+  text-shadow: 0pt 0pt 10pt #CCC;
+  overflow: visible;
+  white-space: nowrap;
+  display:table-row;
+  line-height: 6vh;
+  clear: left;
 }
 
 /*#zh_title1 {
@@ -348,7 +343,6 @@ text-shadow: 0pt 0pt 10pt #CCC
 
 #eng_desc {
 color: inherit;
-vertical-align: bottom;
 text-transform: lowercase;
 line-height: 3.1vh;
 font-size: 3vh;
@@ -362,7 +356,6 @@ text-shadow: 0pt 0pt 10pt #FFF;
 #zh_desc {
 font-family: "Noto Sans CJK SC";
 color: inherit;
-vertical-align: top;
 font-size: 4vh;
 line-height: 4vh;
 font-weight: 300;
@@ -433,16 +426,18 @@ letter-spacing: -0.2pt;
 }
 
 #temp_number {
-padding: 0vh 0vh 0vh 0vh;
-font-family: "Oswald", gotham-light, "Gotham Light", "gotham-light", gotham;
-font-weight: 300;
-font-size: 12vh;
-line-height: 11vh;
-padding-top: 0vh;
-/* letter-spacing: -2vh; */
-letter-spacing: -0.3vh;
-text-align: center;
-text-shadow: 1.8pt 1.8pt 6pt #777;
+  padding: 0vh 0vh 0vh 0vh;
+  font-family: "Oswald", gotham-light, "Gotham Light", "gotham-light", gotham;
+  font-weight: 300;
+  font-size: 12vh;
+  line-height: 11vh;
+  padding-top: 0vh;
+  margin-right: 1vw;
+  /* letter-spacing: -2vh; */
+  letter-spacing: -0.3vh;
+  text-align: center;
+  text-shadow: 1.8pt 1.8pt 6pt #777;
+  display:inline-block;
 }
 
 #temp_numberHolder {
@@ -482,16 +477,17 @@ font-weight: 300;
 }
 
 #air_quality_temp_table {
-/* margin-top: 2.25vh; */
-/* margin-top: 1.5vh; */
-/*height: 2vh;*/
-overflow: visible;
-white-space: normal;
-position:fixed;
-bottom: 7.5vh;
-right: 7.5vh;
-/*width: 25.5vw;*/
-width: 20vw;
+  display:table-row;
+  overflow: visible;
+  white-space: normal;
+  bottom: 7.5vh;
+  right: 7.5vh;
+  width: 20vw;
+  text-align: center;
+}
+
+#air_quality_temp_table>div {
+  display:inline;
 }
 
 table {
@@ -563,33 +559,24 @@ text-shadow: 0.5pt 0.5pt 5pt #37006C;
 }
 
 #weather {
-padding: 1.75vh;
-background-color: #b5ada6;
-border-radius: 4.5pt;
-/*height: calc(48.2vh - 00pt);*/
-/*height: 48.3vh;*/
-height: 50vh;
-background: linear-gradient(180deg, #B7B0A8, #A0958C);
-/*border-style: solid;*/
-/*border-width: 0.20vh;*/
-/*border-color: #716161;*/
-box-shadow: 0.5pt 0.5pt 3.5pt #777;
+  padding: 1.75vh;
+  background-color: #b5ada6;
+  border-radius: 4.5pt;
+  height: 50vh;
+  background: linear-gradient(180deg, #B7B0A8, #A0958C);
+  box-shadow: 0.5pt 0.5pt 3.5pt #777;
+  display: table;
 }
 
 #aqi_box {
-color: #413641;
-/*height: 14.75vh;*/
-/*height: 100%;*/
-/*background-color: purple;*/
-padding: 1vh;
-/* margin-top: 20.2vh; */
-border-radius: 4.5pt;
-letter-spacing: -0.2vw;
-/*padding-radius: 5.4pt;*/
-border-style: solid;
-border-color: #716161;
-/*border-width: 0.18vh;*/
-box-shadow: 0.5pt 0.5pt 5pt #444;
+  color: #413641;
+  padding: 1vh;
+  border-radius: 4.5pt;
+  letter-spacing: -0.2vw;
+  border-style: solid;
+  border-color: #716161;
+  box-shadow: 0.5pt 0.5pt 5pt #444;
+  display:inline-block;
 }
 
 .datetime1 {

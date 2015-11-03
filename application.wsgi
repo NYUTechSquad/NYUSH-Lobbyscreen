@@ -25,6 +25,7 @@ import bs4
 from oauth2client.client import SignedJwtAssertionCredentials
 import gspread
 import markdown
+import pprint
 
 cherrypy.config.update({'environment': 'embedded'})
 
@@ -38,6 +39,18 @@ def slurp(filename):
             return f.read()
     except BaseException as e:
         logger.error(e)
+
+html_escape_table = {
+    "&": "&amp;",
+    '"': "&quot;",
+    "'": "&apos;",
+    ">": "&gt;",
+    "<": "&lt;",
+    }
+
+def html_escape(text):
+    """Produce entities within text."""
+    return "".join(html_escape_table.get(c,c) for c in text)
 
 
 class Root(object):
@@ -81,26 +94,34 @@ class Root(object):
         return soup.select("span.big")[0].get_text().strip()
     aqi.exposed = True
 
-    def announcements(self, col=1):
+    def announcements_html(self, col=1):
         json_key = json.loads(slurp('TVScreenTest-d74f3f051385.json'))
         scope = ['https://spreadsheets.google.com/feeds']
         credentials = SignedJwtAssertionCredentials(json_key["client_email"], json_key["private_key"], scope)
         gc = gspread.authorize(credentials)
         sheet = gc.open_by_key('1SDu06-T5D1VaiuzFQ_aQqHoffL0qllTGGY5Qk52xo9g')
         worksheet = sheet.get_worksheet(0)
-        return str(worksheet.col_values(int(col)))
-    announcements.exposed = True
-
-    def announcements_html(self, row=2):
-        json_key = json.loads(slurp('TVScreenTest-d74f3f051385.json'))
-        scope = ['https://spreadsheets.google.com/feeds']
-        credentials = SignedJwtAssertionCredentials(json_key["client_email"], json_key["private_key"], scope)
-        gc = gspread.authorize(credentials)
-        sheet = gc.open_by_key('1SDu06-T5D1VaiuzFQ_aQqHoffL0qllTGGY5Qk52xo9g')
-        worksheet = sheet.get_worksheet(0)
-        text = worksheet.col_values(6)[int(row)-1]
-        return markdown.markdown(text)
+        text = worksheet.get_all_records(head=1)
+        for record in text:
+            record["Announcement content"] = markdown.markdown(record["Announcement content"])
+            del record["Username"]
+        return "<div>%s</div>" % html_escape(pprint.pformat(text)).replace(" ", "&nbsp;").replace("\n", "<br>")
     announcements_html.exposed = True
+
+    @cherrypy.tools.json_out()
+    def announcements(self):
+        json_key = json.loads(slurp('TVScreenTest-d74f3f051385.json'))
+        scope = ['https://spreadsheets.google.com/feeds']
+        credentials = SignedJwtAssertionCredentials(json_key["client_email"], json_key["private_key"], scope)
+        gc = gspread.authorize(credentials)
+        sheet = gc.open_by_key('1SDu06-T5D1VaiuzFQ_aQqHoffL0qllTGGY5Qk52xo9g')
+        worksheet = sheet.get_worksheet(0)
+        text = worksheet.get_all_records(head=1)
+        for record in text:
+            record["Announcement content"] = markdown.markdown(record["Announcement content"])
+            del record["Username"]
+        return text
+    announcements.exposed = True
 
 
 

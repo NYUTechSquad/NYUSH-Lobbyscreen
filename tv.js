@@ -54,12 +54,12 @@ String.prototype.format = function() {
 
 function onWindowResize() {
     var width = document.body.clientWidth;
-    if (width < 800) {
+    if (width < 700) {
         d3.select("#alltherightstuff").style("display", "none");
         d3.select("")
     } else {
         d3.select("#alltherightstuff").style("display", null);
-    }
+    }    
 }
 
 $(window).load(function() {
@@ -114,7 +114,7 @@ $(window).load(function() {
             // give it the proper path
             weatherImgSrc = "images/" + weatherImgSrc;
 
-            eng_weather = eng_weather.split(' ').join('</br>'); // so each word goes on its own line of text
+            eng_weather = eng_weather;
 
 			d3.text("cherrypy/aqi", function(e, data){
 				aqi(data);
@@ -179,12 +179,13 @@ $(window).load(function() {
                     .append("img")
                         .attr("class", "nomarginstuff")
                         .attr("id", "weatherimage")
+                        .attr("height", "50px")
                         .style("padding-right", extraRightPadding)
                         .attr("src", weatherImgSrc);
                 $("#temp_number").html(temperature + '˚')
 
 				var aqidata = [
-						["eng_air_quality_title", "AirQuality Index"],
+						["eng_air_quality_title", "Air Quality Index"],
 						["zh_air_quality_title", "空 气 质 量 指 数"],
 						["aqi_number", AQI],
 						["eng_aqi_desc", eng_aqi_desc],
@@ -261,7 +262,7 @@ $(window).load(function() {
             	}
             
 
-        	var leftstuff = d3.select("#alltheleftstuff").html('');
+        	var leftstuff = d3.select("#eventscontainer").html('');
         	for (i in data) {
         		if (data[i].location == 'No location has been entered for this event.') {
                     data[i].location = 'Location To Be Determined';

@@ -20,28 +20,31 @@
 
 	<div class="contentpane nomarginstuff" id="contentpane">
 		<div class="allcontents nomarginstuff">
-			<div class="alltheleftstuff parent" id="alltheleftstuff"><!-- green -->
+			<div class="alltheleftstuff parent" id="eventscontainer"><!-- green -->
 				<div class="leftcontent child bottomborder" id="event1"></div>
 				<div class="leftcontent child bottomborder" id="event2"></div>
 				<div class="leftcontent child bottomborder" id="event3"></div>
 				<div class="leftcontent child" id="event4"></div>
-			
 			</div> <!-- end alltheleftstuff -->
 			
 			<div class="alltherightstuff" id="alltherightstuff">
 				<div class="rightcontent child bottomborder" id="sh_clock"></div>
 				<div class="rightcontent child" id="weather">
-					<div class="nomarginstuff" id="weather_title">WEATHER&nbsp|&nbsp天气</div>
-					<table id="weather_desc_table">
-						<tr><td class="weatherDesc" id="eng_desc"></td><td rowspan="2" class="right" id="weatherimageHolder"></td></tr>
-			  			<tr><td class="weatherDesc" id="zh_desc"></td>
-			  		</table>
+					<div class="nomarginstuff" id="weather_title">
+						WEATHER&nbsp|&nbsp天气
+					</div>
+					<div id="weather_desc_table">
+						<div class="right" id="weatherimageHolder"></div>
+						<div class="weatherText">
+							<div class="weatherDesc" id="eng_desc"></div>
+		  					<div class="weatherDesc" id="zh_desc"></div>
+						</div>						
 
-			  		<table id="air_quality_temp_table">
-			  			<tr><td class="nomarginstuff left" id="temp_numberHolder"><div class="nomarginstuff right" id="temp_number"></div></td>
-							<td class="nomarginstuff right" id="aqi_boxHolder"></td>
-						</tr>
-					</table>
+		  			</div>
+			  		<div id="air_quality_temp_table">
+		  				<div class="nomarginstuff right" id="temp_number"></div>
+		  				<div class="nomarginstuff right" id="aqi_boxHolder"></div>
+			  		</div>
 				</div> <!-- end weather -->
 			</div> <!-- end alltherightstuff-->
 
