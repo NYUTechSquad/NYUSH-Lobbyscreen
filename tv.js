@@ -266,13 +266,7 @@ $(window).load(function() {
                     data[i].location = 'Location To Be Determined';
                 }
 
-                var classed = "";
-                if (i != data.length-1){
-                	classed = "event bottomborder";
-                } else {
-                	classed = "event";
-                }
-                var eventfield = leftstuff.append("div").attr("class",classed)
+                var eventfield = leftstuff.append("div").classed("event", true)
                                           .attr("id","event" + (+i+1));
                 eventfield.append("div").attr("class","name")
                           .append("a").text(data[i].name)
