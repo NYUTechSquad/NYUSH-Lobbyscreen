@@ -19,7 +19,10 @@ The files in `raw/` are *tab-separated value* files. The original data used to g
 ## Server
 When setting up the application, ``application.wsgi`` should be configured as a WSGI application on an Apache server. Required Python libraries include
 
+<<<<<<< HEAD
 - `bs4` : Beautiful Soup 4. Used for web scraping for the AQI number.
+=======
+>>>>>>> bb39008b7695d9eb1817add6da3d02b85bb7e126
 - `cherrypy`: the WSGI-framework
 - `dateutil`: for OrgSync API date parsing
 - `google-api-python-client`: For authentication
