@@ -1,56 +1,43 @@
-<!DOCTYPE html>
 <html>
- <head>
-
-  <meta charset="UTF-8">
-  <title>Lobby Display</title>
-  <link rel="stylesheet" href="tv.css" type="text/css">
-  <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:900' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Oswald:700,300' rel='stylesheet' type='text/css'>
-  <script language="javascript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
-  <script src="cherrypy/tvjs"></script>
+<head>
+	<meta charset="UTF-8">
+	<title>Lobby Display</title>
+	<link rel="stylesheet" href="tv.css" type="text/css">
+	<script language="javascript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+	<script src="cherrypy/tvjs"></script>
 </head>
-
-<div class = "allthestuff"> <!-- parent -->
-	<div class = "topbar">
-		<img src="images/NYU Shanghai Logo WHITE.png" alt="NYU Shanghai Logo">
-		<div class="nomarginstuff timeStuff" id="dateHeader"></div>
-	</div>
-
-	<div class="contentpane nomarginstuff" id="contentpane">
-		<div class="allcontents nomarginstuff">
-			<div class="alltheleftstuff parent" id="eventscontainer"><!-- green -->
-				<div class="leftcontent child bottomborder" id="event1"></div>
-				<div class="leftcontent child bottomborder" id="event2"></div>
-				<div class="leftcontent child bottomborder" id="event3"></div>
-				<div class="leftcontent child" id="event4"></div>
-			</div> <!-- end alltheleftstuff -->
-			
-			<div class="alltherightstuff" id="alltherightstuff">
-				<div class="rightcontent child bottomborder" id="sh_clock"></div>
-				<div class="rightcontent child" id="weather">
-					<div class="nomarginstuff" id="weather_title">
+<body>
+	<div id="floatingcontent">
+		<div id="topbar">
+			<img id="nyulogo" src="images/NYU Shanghai Logo WHITE.png" alt="NYU Shanghai Logo">
+			<div id="dateheader"></div>
+			<div class="floatclearer"></div>
+		</div>
+		<div id="contentpane">
+			<div id="eventscontainer" class="column"></div>		
+			<div id="weatherbar" class="column">
+				<div id="clock"></div>
+				<div id="weather">
+					<div id="weather_title">
 						WEATHER&nbsp|&nbsp天气
 					</div>
-					<div id="weather_desc_table">
-						<div class="right" id="weatherimageHolder"></div>
-						<div class="weatherText">
-							<div class="weatherDesc" id="eng_desc"></div>
-		  					<div class="weatherDesc" id="zh_desc"></div>
-						</div>						
-
-		  			</div>
-			  		<div id="air_quality_temp_table">
-		  				<div class="nomarginstuff right" id="temp_number"></div>
-		  				<div class="nomarginstuff right" id="aqi_boxHolder"></div>
+					<div id="weathertable">
+						<div id="weatherbox">
+							<div id="weathertext">
+								<div class="weatherdesc" id="weather_eng_desc"></div>
+			  					<div class="weatherdesc" id="weather_zh_desc"></div>
+							</div>
+							<div id="weatherimageholder"></div>
+			  			</div>
+				  		<div id="air_status_box">
+			  				<div id="temperature"></div>
+			  				<div id="aqi_boxholder"></div>
+				  		</div>
 			  		</div>
-				</div> <!-- end weather -->
-			</div> <!-- end alltherightstuff-->
-
-		</div> <!-- end allcontents -->
-	</div> <!-- end contentpane -->
-</div> <!-- end allthestuff -->
-
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

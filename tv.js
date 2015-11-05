@@ -25,12 +25,12 @@ function updateClock() {
         }
     }
 
-    var dateheader = d3.select("#dateHeader").html('');
+    var dateheader = d3.select("#dateheader").html('');
     dateheader.append("div").attr("class","nomarginstuff date")
                     		.text(engWeekKey[ww] + ', ' + engMonthsKey[mm] + " " + dd);
     dateheader.append("div").attr("class","nomarginstuff date")
                     		.text((mm + 1) + '月' + dd + '日' + ",  " + zhWeekKey[ww]);
-    $("#sh_clock").html('' + h + ":" + m + " " + AP + '');
+    $("#clock").html('' + h + ":" + m + " " + AP + '');
 }
 
 JSONFILE = %s // to be replaced server-side using Python
@@ -54,11 +54,11 @@ String.prototype.format = function() {
 
 function onWindowResize() {
     var width = document.body.clientWidth;
-    if (width < 700) {
-        d3.select("#alltherightstuff").style("display", "none");
+    if (width < 200) {
+        d3.select("#weatherbar").style("display", "none");
         d3.select("")
     } else {
-        d3.select("#alltherightstuff").style("display", null);
+        d3.select("#weatherbar").style("display", null);
     }    
 }
 
@@ -171,18 +171,18 @@ $(window).load(function() {
                 var color = F["color"];
                 var text = F["textcolor"];
 
-                $("#eng_desc").html(eng_weather);
-                $("#zh_desc").html(zh_weather);
+                $("#weather_eng_desc").html(eng_weather);
+                $("#weather_zh_desc").html(zh_weather);
 
-                d3.select("#weatherimageHolder") // clears existing content
+                d3.select("#weatherimageholder") // clears existing content
                     .html('')
                     .append("img")
                         .attr("class", "nomarginstuff")
                         .attr("id", "weatherimage")
-                        .attr("height", "50px")
+                        .attr("height", "100vh")
                         .style("padding-right", extraRightPadding)
                         .attr("src", weatherImgSrc);
-                $("#temp_number").html(temperature + '˚')
+                $("#temperature").html(temperature + '˚')
 
 				var aqidata = [
 						["eng_air_quality_title", "Air Quality Index"],
@@ -192,15 +192,13 @@ $(window).load(function() {
 						["zh_aqi_desc", zh_aqi_desc]
 					];
 				// semi-automatically filling in all the data for AQI display
-                aqibox = d3.select("#aqi_boxHolder").html('')
+                aqibox = d3.select("#aqi_boxholder").html('')
                 			.append("div")
                 			.attr("id", "aqi_box")
-                			.attr("class", "nomarginstuff")
                 			.style("background", color)
                 			.style("color", text);
                 aqibox.selectAll("p").data(aqidata).enter()
                 	.append("p")
-                		.attr("class", "nomarginstuff right")
                 		.attr("id", function(d){return d[0];})
                 		.text(function(d){return d[1]});
             }
@@ -270,9 +268,9 @@ $(window).load(function() {
 
                 var classed = "";
                 if (i != data.length-1){
-                	classed = "leftcontent child bottomborder";
+                	classed = "event bottomborder";
                 } else {
-                	classed = "leftcontent child";
+                	classed = "event";
                 }
                 var eventfield = leftstuff.append("div").attr("class",classed)
                                           .attr("id","event" + (+i+1));
@@ -281,11 +279,11 @@ $(window).load(function() {
                           .attr("href", "https://orgsync.com/" + data[i].orgid 
                             + "/events/" + data[i].id)
                           .attr("class", "secretlink");
-                eventfield.append("div").attr('class',"desc thin datetime1")
+                eventfield.append("div").attr('class',"eventdesc eventdate")
                           .text(datestrings[i][0]);
-                eventfield.append("div").attr('class',"desc thin datetime2")
+                eventfield.append("div").attr('class',"eventdesc eventtime")
                 		  .text(datestrings[i][1]);
-                eventfield.append("div").attr('class',"desc thin datetime3")
+                eventfield.append("div").attr('class',"eventdesc eventlocation")
                 		  .text(data[i].location);
         	}
         }
