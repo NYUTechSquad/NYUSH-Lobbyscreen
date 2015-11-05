@@ -92,6 +92,7 @@ body {
   width: 75%;
   margin-top: 16px;
   background-color: #f8f8f8;
+  /*display:none;*/
 }
 
 .name {
@@ -237,6 +238,7 @@ body {
   border-style: none;
   box-shadow: 0.5pt 0.5pt 5pt #444;
   height: 20%;
+  width: 17vh;
   overflow: hidden;
 }
 
