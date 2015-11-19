@@ -1,4 +1,4 @@
-define(['d3', 'jquery', 'constants'], function(d3, _, constants){
+define(['d3', 'constants'], function(d3, constants){
     function setevents(data) {
         var datestrings = [];
 
@@ -6,7 +6,7 @@ define(['d3', 'jquery', 'constants'], function(d3, _, constants){
                 var startdate = data[i]["start_time"];
                 var enddate   = data[i]["end_time"];
                 var datestr = "{wkday}, {enmonth} {date} | {month}月{date}日 {cnwkday}";
-                datestr = datestr.format({
+                datestr = constants.format(datestr, {
                     wkday  : constants.weekdays_en[startdate[5]],
                     enmonth: constants.months_en[startdate[1]-1],
                     date   : startdate[2],
@@ -40,7 +40,7 @@ define(['d3', 'jquery', 'constants'], function(d3, _, constants){
                         h_end -= 12;
                         AP_end = "PM";
                     }
-                    timestr = timestr.format({
+                    timestr = constants.format(timestr, {
                         h_start : h_start,
                         mm_start: mm_start,
                         h_end   : h_end,

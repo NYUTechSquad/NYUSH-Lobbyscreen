@@ -1,4 +1,4 @@
-define(['d3', 'jquery', 'constants', 'weatherdata'], function(d3, _, constants, weatherdata){
+define(['d3', 'jquery', 'constants', 'weatherdata'], function(d3, $, constants, weatherdata){
     WEATHERDATA = weatherdata.weathernames;
     PADDINGDATA = weatherdata.padding;
     AQIFORMATTING = weatherdata.aqi;
