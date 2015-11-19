@@ -1,3 +1,5 @@
+define(['d3', 'jquery', 'weatherdata'], function(d3, $, JSONFILE){
+
 var engMonthsKey = ['January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
 ];
@@ -33,7 +35,6 @@ function updateClock() {
     $("#clock").html('' + h + ":" + m + " " + AP + '');
 }
 
-JSONFILE = {weatherconfig}; // to be replaced server-side using Python
 ;WEATHERDATA = JSONFILE["weathernames"];
 PADDINGDATA = JSONFILE["padding"];
 AQIFORMATTING = JSONFILE["aqi"];
@@ -468,3 +469,6 @@ function onload() {
     animateslides(eventdur, announcedur);
     setInterval(function(){animateslides(eventdur, announcedur);}, eventdur+announcedur); // each slide lasts for a minute and 4.
 }
+
+return onload;
+}); // end of the define() callback

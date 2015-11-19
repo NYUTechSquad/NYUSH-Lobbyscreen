@@ -50,5 +50,6 @@ for filename in files:
             content[k] = v
     data[basename] = content
 
-with codecs.open("weather.json", "w", 'utf-8') as f:
-    json.dump(data, f)
+js = "define(%s)" % json.dumps(data)
+with codecs.open("weatherdata.js", "w", 'utf-8') as f:
+    f.write(js)

@@ -59,6 +59,7 @@ class Root(object):
         self.counter = 0
         self.weatherapikey = slurp("weatherapikey.sensitive")
 
+
     def index(self):
         self.counter += 3
         return 'Hello World!%d' % (self.counter)
@@ -78,14 +79,6 @@ class Root(object):
     def legacyevents(self):
         return json.dumps(eventsorter.sort(86405, TESTING=True, LEGACY=True))
     legacyevents.exposed = True
-
-    def tvjs(self):
-        try:
-            cherrypy.response.headers['Content-Type'] = 'text/javascript'
-            return slurp("tv.js").replace("{weatherconfig}",slurp("weather.json"))
-        except BaseException as e:
-            logger.error(e)
-    tvjs.exposed = True
 
     def weather(self):
         return requests.get(r"http://api.openweathermap.org/data/2.5/weather?q=shanghai&lang=zh_cn&APPID=" +
