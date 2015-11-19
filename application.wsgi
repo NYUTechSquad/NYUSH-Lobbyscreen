@@ -6,7 +6,8 @@ sys.path.append(os.path.dirname(__file__))
 os.environ['PYTHON_EGG_CACHE'] = '/srv/www/localhost/.python-egg'
 
 import logging
-import sorter
+import eventsorter
+import announcementsorter
 import requests
 sys.stdout = sys.stderr
 
@@ -67,20 +68,23 @@ class Root(object):
         cherrypy.response.headers['Content-Type']= 'application/json'
         TESTING = True
         if TESTING:
-            r = sorter.sort(86405, TESTING=True, DUMPTOFILE=False, LEGACY=False)
+            r = eventsorter.sort(86405, TESTING=True, DUMPTOFILE=False, LEGACY=False)
         else:
-            r = sorter.sortAll()
+            r = eventsorter.sortAll()
         # Let's have a test case.
         return json.dumps(r)
     events.exposed = True
 
     def legacyevents(self):
-        return json.dumps(sorter.sort(86405, TESTING=True, LEGACY=True))
+        return json.dumps(eventsorter.sort(86405, TESTING=True, LEGACY=True))
     legacyevents.exposed = True
 
     def tvjs(self):
-        cherrypy.response.headers['Content-Type'] = 'text/javascript'
-        return slurp("tv.js") % (slurp("weather.json"))
+        try:
+            cherrypy.response.headers['Content-Type'] = 'text/javascript'
+            return slurp("tv.js").replace("{weatherconfig}",slurp("weather.json"))
+        except BaseException as e:
+            logger.error(e)
     tvjs.exposed = True
 
     def weather(self):
@@ -94,20 +98,6 @@ class Root(object):
         return soup.select("span.big")[0].get_text().strip()
     aqi.exposed = True
 
-    def announcements_html(self, col=1):
-        json_key = json.loads(slurp('TVScreenTest-d74f3f051385.json'))
-        scope = ['https://spreadsheets.google.com/feeds']
-        credentials = SignedJwtAssertionCredentials(json_key["client_email"], json_key["private_key"], scope)
-        gc = gspread.authorize(credentials)
-        sheet = gc.open_by_key('1SDu06-T5D1VaiuzFQ_aQqHoffL0qllTGGY5Qk52xo9g')
-        worksheet = sheet.get_worksheet(0)
-        text = worksheet.get_all_records(head=1)
-        for record in text:
-            record["Announcement content"] = markdown.markdown(record["Announcement content"])
-            del record["Username"]
-        return "<div>%s</div>" % html_escape(pprint.pformat(text)).replace(" ", "&nbsp;").replace("\n", "<br>")
-    announcements_html.exposed = True
-
     @cherrypy.tools.json_out()
     def announcements(self):
         json_key = json.loads(slurp('TVScreenTest-d74f3f051385.json'))
@@ -116,11 +106,14 @@ class Root(object):
         gc = gspread.authorize(credentials)
         sheet = gc.open_by_key('1SDu06-T5D1VaiuzFQ_aQqHoffL0qllTGGY5Qk52xo9g')
         worksheet = sheet.get_worksheet(0)
-        text = worksheet.get_all_records(head=1)
-        for record in text:
+        content = worksheet.get_all_records(head=1)
+        for record in content:
             record["Announcement content"] = markdown.markdown(record["Announcement content"])
             del record["Username"]
-        return text
+        try:
+            return announcementsorter.sort(content)
+        except BaseException as e:
+            logger.error(e)
     announcements.exposed = True
 
 

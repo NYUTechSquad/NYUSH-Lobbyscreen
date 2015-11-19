@@ -356,3 +356,22 @@ body {
   margin-top: 16px;
   background-color: #f8f8f8;
 }
+
+#timerholder {
+  position: fixed;
+  right: 0px;
+  bottom: 0px;
+}
+
+#timersvg {
+}
+
+#totaltime {
+  stroke-width: 0;
+  fill: #eff3ff;
+}
+
+#elapsedtime {
+  fill: #c6dbef;
+  stroke-width: 0;
+}

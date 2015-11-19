@@ -337,6 +337,7 @@ function scrollTween(target) {
         return function(t) {this.scrollTop = i(t);};
     };
 }
+
 var start = 0;
 var end = 0;
 function scrollTo(index, duration) {
@@ -367,7 +368,7 @@ function doScroll(duration) {
         timeoutclosure(i, i*onetime);
     }
     window.setTimeout(function(){
-            scrollTo(0, onetime);
+            scrollTo(0, 2000);
         }, num*onetime);
 }
 
@@ -397,17 +398,46 @@ function fadeoutin(outsel, insel, duration) {
         fadein(insel, duration);}, duration);
 }
 
-function animateslides(slideduration) {
+
+function arcTween(arc, angle) {
+    return function() {
+        var i = d3.interpolateNumber(0, angle);
+        var sel = d3.select(this);
+        return function(t) {
+            sel.attr("d", arc({endAngle:i(t)}));
+        };
+    };
+}
+
+function animateslides(eventduration, announceduration) {
     var time = 1000;
+    drawtimer(eventduration);
     window.setTimeout(function(){
         // do a transition to the announcement slide.
         fadeoutin("#eventscontainer", "#announcementcontainer", time);
-        doScroll(slideduration);
-    }, slideduration);
+        drawtimer(announceduration);
+        doScroll(announceduration);
+    }, eventduration);
     window.setTimeout(function(){
         // do a transition back to the event slide
         fadeoutin("#announcementcontainer", "#eventscontainer", time);
-    }, slideduration*4);
+    }, announceduration+eventduration);
+}
+
+function drawtimer(duration) {
+    var svg = d3.select("#timersvg").html('')
+                .append("g")
+                .attr("transform","translate(20, 20)");
+    svg.append("circle")
+       .attr("id", "totaltime")
+       .attr("r", 20)
+       .attr("x", 0)
+       .attr("y", 0);
+    var arc = d3.svg.arc().innerRadius(0)
+                          .outerRadius(20)
+                          .startAngle(0);
+    var graph = svg.append("path").attr("id", "elapsedtime");
+    graph.transition().duration(duration).ease("linear").tween('arctween', arcTween(arc, 2*Math.PI));
 }
 
 function onload() {
@@ -433,4 +463,8 @@ function onload() {
     refresh();
     onWindowResize();
     setInterval(refresh, 1000 * 60 * 10); // refresh every 10mins
+    var eventdur = 30000;
+    var announcedur = 60000;
+    animateslides(eventdur, announcedur);
+    setInterval(function(){animateslides(eventdur, announcedur);}, eventdur+announcedur); // each slide lasts for a minute and 4.
 }
