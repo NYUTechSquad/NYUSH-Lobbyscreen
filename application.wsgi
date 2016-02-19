@@ -67,7 +67,7 @@ class Root(object):
 
     def events(self):
         cherrypy.response.headers['Content-Type']= 'application/json'
-        TESTING = True
+        TESTING = False
         if TESTING:
             r = eventsorter.sort(86405, TESTING=True, DUMPTOFILE=False, LEGACY=False)
         else:

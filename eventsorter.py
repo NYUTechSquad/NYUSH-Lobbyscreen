@@ -27,7 +27,9 @@ def findSoonestOccurrence(timestr, occs):
 
 def prettifyDate(datestring):
     # Turn the API-style date into an array of date things.
-    date = parser.parse(datestring)
+    if type(datestring) == list: # Sometimes datestring randomly is a list.
+        return datestring
+    date = parser.parse(datestring.encode('ascii','ignore'))
     return [date.year, date.month, date.day, date.hour, date.minute, date.weekday()+1]
 
 def prettifyEvents(events):
@@ -55,7 +57,7 @@ def sort(orgID, TESTING=False, DUMPTOFILE=False, LEGACY=False):
     currdatetime = datetime.datetime.today()
     timestring = currdatetime.strftime("%Y-%m-%dT%H:%M:%SZ")
 
-    url = ("https://api.orgsync.com/api/v2/orgs/%d/events?key=%s&start_date=%s"
+    url = ("http://api.orgsync.com/api/v2/orgs/%d/events?key=%s&start_date=%s"
           % (orgID, apikey, timestring))
     response = None
 
