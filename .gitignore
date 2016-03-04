@@ -1,3 +1,7 @@
 *.sensitive
 jquery.js
 python-dateutil-1.5/*
+.*
+TVScreenTest*
+images/*
+*.pyc

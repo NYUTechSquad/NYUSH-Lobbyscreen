@@ -3,7 +3,7 @@ import sys
 
 sys.path.append(os.path.dirname(__file__))
 
-os.environ['PYTHON_EGG_CACHE'] = '/srv/www/localhost/.python-egg'
+os.environ['PYTHON_EGG_CACHE'] = '/home/user1/NYUSH-Lobbyscreen/.eggcache'
 
 import logging
 import eventsorter
@@ -14,7 +14,8 @@ sys.stdout = sys.stderr
 # Can only print using this logger, because Apache
 logger = logging.getLogger('wsgi')
 logger.setLevel(logging.DEBUG)
-ch = logging.StreamHandler(sys.stderr)
+# ch = logging.FileHandler("nginx.log")
+ch = logging.StreamHandler(stream=sys.stderr)
 logger.addHandler(ch)
 
 import atexit
@@ -28,18 +29,15 @@ import gspread
 import markdown
 import pprint
 
-cherrypy.config.update({'environment': 'embedded'})
+cherrypy.config.update({'environment': 'embedded', "log.screen":True})
 
 if cherrypy.__version__.startswith('3.0') and cherrypy.engine.state == 0:
     cherrypy.engine.start(blocking=False)
     atexit.register(cherrypy.engine.stop)
 
 def slurp(filename):
-    try:
-        with codecs.open(os.path.abspath(os.path.join(os.path.dirname(__file__), filename))) as f:
-            return f.read()
-    except BaseException as e:
-        logger.error(e)
+    with codecs.open(os.path.abspath(os.path.join(os.path.dirname(__file__), filename))) as f:
+        return f.read()
 
 html_escape_table = {
     "&": "&amp;",
@@ -52,6 +50,7 @@ html_escape_table = {
 def html_escape(text):
     """Produce entities within text."""
     return "".join(html_escape_table.get(c,c) for c in text)
+
 
 
 class Root(object):
@@ -67,7 +66,7 @@ class Root(object):
 
     def events(self):
         cherrypy.response.headers['Content-Type']= 'application/json'
-        TESTING = True
+        TESTING = False
         if TESTING:
             r = eventsorter.sort(86405, TESTING=True, DUMPTOFILE=False, LEGACY=False)
         else:
@@ -103,12 +102,9 @@ class Root(object):
         for record in content:
             record["Announcement content"] = markdown.markdown(record["Announcement content"])
             del record["Username"]
-        try:
-            return announcementsorter.sort(content)
-        except BaseException as e:
-            logger.error(e)
+        return announcementsorter.sort(content)
     announcements.exposed = True
 
 
 
-application = cherrypy.Application(Root(), script_name=None, config=None)
+application = cherrypy.Application(Root(), script_name="/cherrypy/", config=None)

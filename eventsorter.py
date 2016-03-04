@@ -13,7 +13,7 @@ orgIDs = {
 
 logger = logging.getLogger('wsgi')
 logger.setLevel(logging.DEBUG)
-ch = logging.StreamHandler(sys.stderr)
+ch = logging.FileHandler("nginx.log")
 logger.addHandler(ch)
 
 def findSoonestOccurrence(timestr, occs):
@@ -27,6 +27,8 @@ def findSoonestOccurrence(timestr, occs):
 
 def prettifyDate(datestring):
     # Turn the API-style date into an array of date things.
+    if type(datestring) == list:
+        return datestring
     date = parser.parse(datestring)
     return [date.year, date.month, date.day, date.hour, date.minute, date.weekday()+1]
 
