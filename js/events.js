@@ -6,9 +6,10 @@ define(['d3', 'constants'], function(d3, constants){
                 var startdate = data[i]["start_time"];
                 var enddate   = data[i]["end_time"];
                 var datestr = "{wkday}, {enmonth} {date} | {month}月{date}日 {cnwkday}";
+                console.log(startdate, enddate);
                 datestr = constants.format(datestr, {
                     wkday  : constants.weekdays_en[startdate[5]],
-                    enmonth: constants.months_en[startdate[1]-1],
+                    enmonth: constants.months_en[startdate[1]],
                     date   : startdate[2],
                     month  : startdate[1],
                     cnwkday: constants.weekdays_zh[startdate[5]]
